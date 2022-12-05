@@ -1,0 +1,64 @@
+<div th:fragment="user-row">
+    <td th:text="${user.getId()}"></td>
+    <td th:text="${user.getUserDetails().getSurname()}"></td>
+    <td th:text="${user.getUserDetails().getName()}"></td>
+    <td th:text="${user.getUserDetails().getPatronymic()}"></td>
+    <td th:text="${user.getPhone()}"></td>
+    <td th:text="${user.getUserDetails().getAge()}"></td>
+    <td th:text="${user.getUserDetails().getPassportID()}"></td>
+    <td th:text="${user.getEmail()}"></td>
+    <td th:text="${user.getUserDetails().getRegDate()}"></td>
+    <td th:text="${user.getRole.name()}"></td>
+</div>
+
+
+<div th:fragment="request-row">
+    <td th:text="${request.getId()}"></td>
+    <td>
+        <a th:href="@{/admin/credits/{id}(id=${request.getCredit().getId()})}">
+            <div th:text="${request.getCredit().getId()}"></div>
+        </a>
+    </td>
+    <td>
+        <a th:href="@{/admin/users/{id}(id=${request.getUser.getId()})}">
+            <div th:text="${request.getUser().getId()}"></div>
+        </a>
+    </td>
+    <td th:text="${request.getSum()}"></td>
+    <td th:text="${request.getTerm()}"></td>
+    <td th:text="${request.getIncome()}"></td>
+    <td th:text="${request.getCreditsCount()}"></td>
+    <td th:text="${request.getCreditsPayments()}"></td>
+    <td th:text="${request.getRequestStatus().name()}"></td>
+    <td>
+        <div th:if="${request.getResponse()}">
+            <a th:href="@{/admin/requests/{id}/response(id=${request.getId()})}">
+                <div th:text="${request.getResponse().getId()}"></div>
+            </a>
+        </div>
+    </td>
+</div>
+
+
+<div th:fragment="response-row">
+    <td th:text="${response.getId()}"></td>
+    <td th:text="${response.getSum()}"></td>
+    <td th:text="${response.getDatetime()}"></td>
+</div>
+
+
+<div th:fragment="credit-row">
+    <td th:text="${credit.getId()}"></td>
+    <td>
+        <a href="#">
+            <div th:text="${credit.getBank().getId()}"></div>
+        </a>
+    </td>
+    <td th:text="${credit.getCreditType()}"></td>
+    <td th:text="${credit.getMaxSum()}"></td>
+    <td>
+        <a href="#">
+            <div>Подробнее</div>
+        </a>
+    </td>
+</div>

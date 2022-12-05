@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+        <title>Sign-Up</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <div th:if="${msgExistingEmail != null}" th:text="${msgExistingEmail}"></div>
+        <div th:if="${msgExistingPhone != null}" th:text="${msgExistingPhone}"></div>
+        <main>
+            <form action="/auth/signup" method="post">
+                <fieldset>
+                    <legend>Регистрация</legend>
+                    <div>
+                        <div>
+                            <label>Фамилия:</label><br>
+                            <input type="text" name="surname" size="20" required><br>
+                            <label>Имя:</label><br>
+                            <input type="text" name="name" size="20" required><br>
+                            <label>Отчество:</label><br>
+                            <input type="text" name="patronymic" size="20" required><br>
+                            <label>Возраст:</label><br>
+                            <input type="number" name="age" min="18" max="120" size="20" required><br>
+                            <label>Идентификационный номер:</label><br>
+                            <input type="text" name="passportID" size="20" required><br>
+                            <label>Телефон:</label><br>
+                            <input type="tel" name="phone" size="20" required><br>
+                            <label>E-mail:</label><br>
+                            <input type="email" name="email" size="20" autocomplete="on" required><br>
+                            <label>Пароль:</label><br>
+                            <input type="text" name="password" size="20" required><br>
+                            <label>Подтвердить пароль:</label><br>
+                            <input type="text" name="password2" size="20" required><br>
+                            <label><input type="checkbox" name="agreement" value="agree" required>Я согласен(а) на обработку персональных данных</label><br>
+                        </div>
+                        <div>
+                            <input type="submit" value="Зарегистрироваться"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Log-in</title>
+    </head>
+    <body>
+        <main>
+            <form action="/auth/login" method="post">
+                <fieldset>
+                    <legend>Вход</legend>
+                    <div>
+                        <label for="phoneOrEmail">Телефон или E-mail:</label><br>
+                        <input type="text" id="phoneOrEmail" name="username" size="20" autocomplete="on" required><br>
+                        <label for="password">Пароль:</label><br>
+                        <input type="password" id="password"  name="password" size="20" required><br>
+                    </div>
+                    <input type="submit" value="Войти">
+                </fieldset>
+            </form>
+            <a href="signup">Регистрация</a>
+        </main>
+    </body>
+</html>
+
+
