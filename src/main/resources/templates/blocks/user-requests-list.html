@@ -1,0 +1,65 @@
+<table class="table" th:fragment="user-requests-table">
+    <thead>
+    <tr>
+        <th scope="col">№</th>
+        <th scope="col">ID</th>
+        <th scope="col">Банк</th>
+        <th scope="col">Название кредита</th>
+        <th scope="col">Желаемая сумма</th>
+        <th scope="col">Cрок</th>
+        <th scope="col">Процентная ставка</th>
+        <th scope="col">Статус заявки</th>
+        <th scope="col">Ответ</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="request : ${user.getRequests()}">
+        <th scope="row" th:text="${requestStat.index}+1"></th>
+        <div th:insert="blocks/user-requests-list :: request-row"></div>
+        <td>
+            <a th:if="${request.getRequestStatus().name()=='NEW'}" th:href="@{/admin/requests/{id}(id=${request.getId()})}">
+                <button type="button" class="btn btn-outline-primary">Cha</button>
+            </a>
+        </td>
+        <td>
+            <button type="button" class="btn btn-outline-danger">Del</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+<div th:fragment="request-row">
+    <td th:text="${request.getId()}"></td>
+    <td th:text="${request.getCredit().getBank().getName()}"></td>
+    <td th:text="${request.getCredit().getCreditType()}"></td>
+    <td th:text="${request.getSum()}"></td>
+    <td th:text="${request.getCreditTermRateVariant().getTerm()}"></td>
+    <td th:text="${request.getCreditTermRateVariant().getRate()}"></td>
+    <td th:text="${request.getRequestStatus().name()}" th:with="request1=${request}"></td>
+    <td>
+        <div th:if="${request.getRequestStatus().name()=='COMPLETED'}">
+            <div th:replace="blocks/modal-window :: modal-window-call-btn"></div>
+            <div th:with="modalWindowTitle=${'Ответ на заявку №'+request.getId()}" th:replace="blocks/modal-window :: modal-window"></div>
+        </div>
+    </td>
+</div>
+
+
+
+
+<div th:fragment="user-request-response">
+    <div th:if="${request.getResponse().getSum().intValue()!=0}">
+        <h3>Заявка одобрена</h3>
+        <p th:text="${'Кредит: ' + request.getCredit().getCreditType() + '  ' + request.getCreditTermRateVariant().getRate() + '%'}"></p>
+        <p th:text="${'Одобренная сумма: ' + request.getResponse().getSum()}"></p>
+        <p th:text="${'Желаемая сумма: ' + request.getSum()}"></p>
+        <p>С вами свяжется сотрудник банка</p>
+    </div>
+    <div th:if="${request.getResponse.getSum().intValue()==0}">
+        <h3>Заявка отклонена</h3>
+    </div>
+</div>
