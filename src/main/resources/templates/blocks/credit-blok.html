@@ -1,9 +1,12 @@
 <div class="col" th:fragment="credit">
     <div class="card mb-4 rounded-3 shadow-sm">
         <div class="card-body">
-            <p style="font-size: 20px" th:text="${credit.getCreditType()}"/>
-            <h3 class="card-title pricing-card-title" th:text="${credit.getRate()}+' %'"/>
-
+            <p th:text="${credit.getCreditType()}"/>
+            <h3 class="card-title pricing-card-title">
+                <span th:each="creditVariants : ${credit.getCreditTermRateVariants()}" th:text="${creditVariants.getRate()} + '%  '"/>
+            </h3>
+            <p th:text="${credit.getBank().getName()}"/>
+            <p th:text="'(до ' + ${credit.getMaxSum()} + ' бел.руб.)'"/>
             <a th:href="@{/form-online-request/{id}(id=${credit.getId()})}" class="w-100 btn btn-lg btn-outline-primary">Оформить заявку</a>
         </div>
     </div>
