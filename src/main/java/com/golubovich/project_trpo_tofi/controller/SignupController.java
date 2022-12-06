@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Optional;
 
 @Controller
@@ -47,7 +45,6 @@ public class SignupController {
         }
 
         user.setUserDetails(userDetails);
-        userDetails.setUser(user);
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

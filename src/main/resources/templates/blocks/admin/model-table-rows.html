@@ -25,7 +25,8 @@
         </a>
     </td>
     <td th:text="${request.getSum()}"></td>
-    <td th:text="${request.getTerm()}"></td>
+    <td th:text="${request.getCreditTermRateVariant().getTerm()}"></td>
+    <td th:text="${request.getCreditTermRateVariant().getRate() + '%'}"></td>
     <td th:text="${request.getIncome()}"></td>
     <td th:text="${request.getCreditsCount()}"></td>
     <td th:text="${request.getCreditsPayments()}"></td>
@@ -50,15 +51,45 @@
 <div th:fragment="credit-row">
     <td th:text="${credit.getId()}"></td>
     <td>
-        <a href="#">
-            <div th:text="${credit.getBank().getId()}"></div>
+        <a th:href="@{/admin/banks/{id}(id=${credit.getBank().getId()})}">
+            <div th:text="${credit.getBank().getName()}"></div>
         </a>
     </td>
     <td th:text="${credit.getCreditType()}"></td>
     <td th:text="${credit.getMaxSum()}"></td>
     <td>
-        <a href="#">
-            <div>Подробнее</div>
+        <a th:href="@{/admin/credits/{id}/variants(id=${credit.getId()})}">
+            <div>Варианты</div>
         </a>
+    </td>
+</div>
+
+
+<div th:fragment="bank-row">
+    <td th:text="${bank.getId()}"></td>
+    <td th:text="${bank.getName()}"></td>
+    <td th:text="${bank.getTrustZone()}"></td>
+    <td>
+        <a th:href="@{/admin/banks/{id}/addresses-phones(id=${bank.getId()})}">
+            <div>Подробнее адреса</div>
+        </a>
+    </td>
+</div>
+
+
+<div th:fragment="creditVariant-row">
+    <td th:text="${creditVariant.getId()}"></td>
+    <td th:text="${creditVariant.getTerm()}"></td>
+    <td th:text="${creditVariant.getRate()}"></td>
+</div>
+
+
+<div th:fragment="bankAddresses-row">
+    <td th:text="${bankAddress.getBank().getName()}"></td>
+    <td th:text="${bankAddress.getAddress()}"></td>
+    <td>
+        <div th:each="phone : ${bankAddress.getPhones()}">
+            <div th:text="${phone.getPhone()}"></div>
+        </div>
     </td>
 </div>

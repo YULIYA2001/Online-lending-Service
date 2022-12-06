@@ -17,6 +17,7 @@
     <th scope="col">ID клиента</th>
     <th scope="col">Сумма</th>
     <th scope="col">Срок</th>
+    <th scope="col">Ставка</th>
     <th scope="col">Доходы</th>
     <th scope="col">Кол-во текущих кредитов</th>
     <th scope="col">Выплаты по кредитам</th>
@@ -32,8 +33,27 @@
 
 <div th:fragment="credit-header">
     <th scope="col">ID</th>
-    <th scope="col">ID банка</th>
+    <th scope="col">Банк</th>
     <th scope="col">Наименование кредита</th>
     <th scope="col">Максимальная сумма</th>
     <th scope="col">Ставки и термины</th>
+</div>
+
+<div th:fragment="bank-header">
+    <th scope="col">ID</th>
+    <th scope="col">Название банка</th>
+    <th scope="col">Зона доверия</th>
+    <th scope="col">Адреса</th>
+</div>
+
+<div th:fragment="creditVariant-header">
+    <th scope="col">ID</th>
+    <th scope="col">Срок</th>
+    <th scope="col">Ставка</th>
+</div>
+
+<div th:fragment="bankAddresses-header">
+    <th scope="col">Название банка</th>
+    <th scope="col">Адрес</th>
+    <th scope="col">Телефон</th>
 </div>

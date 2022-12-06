@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Request</title>
+    <title th:text="${model_name}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
   </head>
   <body>
-    <h1>Request</h1>
+    <h1 th:text="${model_name}"></h1>
     <table class="table">
       <thead>
-        <tr th:insert='"blocks/admin/model-table-headers :: "+ ${model-name}+"-header"'></tr>
+        <tr th:insert="~{'blocks/admin/model-table-headers' :: ${model_name + '-header'}}"></tr>
       </thead>
       <tbody>
-        <tr th:insert="blocks/admin/model-table-rows :: request-row"></tr>
+        <tr th:insert="~{'blocks/admin/model-table-rows' :: ${model_name + '-row'}}"></tr>
       </tbody>
     </table>
   </body>

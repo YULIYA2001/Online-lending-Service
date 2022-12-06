@@ -17,7 +17,10 @@ public class PersonalCabinetController  {
     @GetMapping("/cabinet")
     public String cabinet(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("user", userRepository.findByEmail(authentication.getName()).get());
+        User user = userRepository.findByEmail(authentication.getName()).get();
+        model.addAttribute("user", user);
+        model.addAttribute("modalWindowContent", "user-request-response");
+        model.addAttribute("modalWindowPath", "blocks/user-requests-list");
         return "personal-cabinet";
     }
 }
