@@ -1,7 +1,9 @@
 package com.golubovich.project_trpo_tofi.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -10,6 +12,8 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
+@ToString(exclude = {"user"})
+@EqualsAndHashCode(exclude = {"user"})
 @Table(name = "UserDetails")
 public class UserDetails {
 

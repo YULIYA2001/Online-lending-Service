@@ -1,9 +1,7 @@
 package com.golubovich.project_trpo_tofi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,6 +10,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"requests"})
+@EqualsAndHashCode(exclude = {"requests"})
 @Table(name = "CreditTermRateVariants")
 public class CreditTermRateVariant {
     @Id
@@ -28,4 +28,7 @@ public class CreditTermRateVariant {
     @JsonIgnore
     @JoinColumn(name = "Credit_ID")
     private Credit credit;
+
+    @OneToMany(mappedBy = "creditTermRateVariant", cascade = CascadeType.ALL)
+    private Set<Request> requests;
 }

@@ -2,7 +2,9 @@ package com.golubovich.project_trpo_tofi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -12,6 +14,8 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
+@ToString(exclude = {"response"})
+@EqualsAndHashCode(exclude = {"response"})
 @Table(name = "Requests")
 public class Request {
     @Id
@@ -20,9 +24,6 @@ public class Request {
 
     @Column(precision=18, scale=2, nullable = false)
     private BigDecimal sum;
-
-    @Column(nullable = false, length = 20)
-    private String term;
 
     @Column(precision=18, scale=2, nullable = false)
     private BigDecimal income;
@@ -50,6 +51,11 @@ public class Request {
     @JsonIgnore
     @JoinColumn(name = "Credit_ID")
     private Credit credit;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "CreditTermRateVariant_ID")
+    private CreditTermRateVariant creditTermRateVariant;
 
     @OneToOne(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
     @PrimaryKeyJoinColumn

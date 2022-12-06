@@ -1,7 +1,9 @@
 package com.golubovich.project_trpo_tofi.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -10,6 +12,8 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
+@ToString(exclude = {"addresses", "credits"})
+@EqualsAndHashCode(exclude = {"addresses", "credits"})
 @Table(name = "Banks")
 public class Bank {
     @Id

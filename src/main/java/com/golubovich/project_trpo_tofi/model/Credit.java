@@ -1,9 +1,7 @@
 package com.golubovich.project_trpo_tofi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,6 +11,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"requests", "creditTermRateVariants"})
+@EqualsAndHashCode(exclude = {"requests", "creditTermRateVariants"})
 @Table(name = "Credits")
 public class Credit {
     @Id

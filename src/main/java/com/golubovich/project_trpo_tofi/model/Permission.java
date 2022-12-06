@@ -1,10 +1,11 @@
 package com.golubovich.project_trpo_tofi.model;
 
 public enum Permission {
-    CREDITS_READ("credits:read"),
-    CREDITS_WRITE("credits:write"),
+    USER_READ("user:read"),
+    USER_WRITE("user:write"),
     ADMIN_READ("admin:read"),
-    ADMIN_CHANGE("admin:change");
+    ADMIN_WRITE("admin:write"),
+    SUPERADMIN_WRITE("superadmin:write");
 
     private final String permission;
 

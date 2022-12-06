@@ -1,7 +1,9 @@
 package com.golubovich.project_trpo_tofi.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,6 +11,8 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
+@ToString(exclude = {"requests"})
+@EqualsAndHashCode(exclude = {"requests"})
 @Table(name = "Users")
 public class User {
     @Id
@@ -32,7 +36,7 @@ public class User {
     private Role role;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_details_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_details_id")
     private UserDetails userDetails;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
