@@ -43,7 +43,7 @@
     <td>
         <div th:if="${request.getRequestStatus().name()=='COMPLETED'}">
             <div th:replace="blocks/modal-window :: modal-window-call-btn"></div>
-            <div th:with="modalWindowTitle=${'Ответ на заявку №'+request.getId()}" th:replace="blocks/modal-window :: modal-window"></div>
+            <div th:with="modalWindowTitle=${'Ответ на заявку №'+request.getId()}" th:insert="blocks/modal-window :: modal-window"></div>
         </div>
     </td>
 </div>
@@ -57,9 +57,9 @@
         <p th:text="${'Кредит: ' + request.getCredit().getCreditType() + '  ' + request.getCreditTermRateVariant().getRate() + '%'}"></p>
         <p th:text="${'Одобренная сумма: ' + request.getResponse().getSum()}"></p>
         <p th:text="${'Желаемая сумма: ' + request.getSum()}"></p>
-        <p>С вами свяжется сотрудник банка</p>
+        <p>С Вами свяжется сотрудник банка</p>
     </div>
     <div th:if="${request.getResponse.getSum().intValue()==0}">
-        <h3>Заявка отклонена</h3>
+        <h3>К сожалению Ваша заявка отклонена.</h3>
     </div>
 </div>

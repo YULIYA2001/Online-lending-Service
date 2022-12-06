@@ -1,12 +1,14 @@
 <!-- Modal window -->
 <div th:fragment="modal-window">
-    <div class="modal" id="myModal"
+    <div class="modal" th:id="${'myModal'+request.getId()}"
          style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 th:text="${modalWindowTitle}" class="modal-title"></h5>
-                    <button type="button" class="btn-close"></button>
+                    <button th:id="${'btnClose'+request.getId()}" th:name="${request.getId()}"
+                            type="button" class="btn-close"
+                            onclick="closeModal(this.name)"></button>
                 </div>
                 <div class="modal-body">
                     <div th:replace="~{${modalWindowPath} :: ${modalWindowContent}}"></div>
@@ -16,27 +18,38 @@
     </div>
 
     <script>
-        var modal = document.getElementById("myModal");
-        var btn = document.getElementById("myBtn");
-        var span = document.getElementsByClassName("btn-close")[0];
-        // When the user clicks the button, open the modal
-        btn.onclick = function () {
+        function callModal(btn_name) {
+            var modal = document.getElementById("myModal"+btn_name);
             modal.style.display = "block";
         }
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
+        function closeModal(btn_name) {
+            var modal = document.getElementById("myModal"+btn_name);
             modal.style.display = "none";
         }
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
+
+        // var modal = document.getElementById("myModal");
+        // var btn = document.getElementById("myBtn");
+        // var span = document.getElementsByClassName("btn-close")[0];
+        // // When the user clicks the button, open the modal
+        // btn.onclick = function () {
+        //     modal.style.display = "block";
+        // }
+        // // When the user clicks on <span> (x), close the modal
+        // span.onclick = function () {
+        //     modal.style.display = "none";
+        // }
+        // // When the user clicks anywhere outside of the modal, close it
+        // window.onclick = function (event) {
+        //     if (event.target == modal) {
+        //         modal.style.display = "none";
+        //     }
+        // }
     </script>
 </div>
 
 <!-- Button to call modal window -->
 <div th:fragment="modal-window-call-btn">
-    <button id="myBtn" type="button" class="btn btn-primary" th:text="${modalWindowBtnText}"></button>
+    <button th:id="${'myBtn'+request.getId()}" th:name="${request.getId()}"
+            type="button" class="btn btn-primary" th:text="${modalWindowBtnText}"
+            onclick="callModal(this.name)"></button>
 </div>
