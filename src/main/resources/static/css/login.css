@@ -13,4 +13,8 @@
     }
 }
 
+#section_to_be_upper {
+    margin-top: 5%;
+}
+
 html { overflow-y:scroll; }
