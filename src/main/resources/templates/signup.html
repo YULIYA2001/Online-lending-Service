@@ -1,44 +1,169 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-        <title>Sign-Up</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    </head>
-    <body>
-        <div th:if="${msgExistingEmail != null}" th:text="${msgExistingEmail}"></div>
-        <div th:if="${msgExistingPhone != null}" th:text="${msgExistingPhone}"></div>
-        <main>
-            <form action="/auth/signup" method="post">
-                <fieldset>
-                    <legend>Регистрация</legend>
-                    <div>
-                        <div>
-                            <label>Фамилия:</label><br>
-                            <input type="text" name="surname" size="20" required><br>
-                            <label>Имя:</label><br>
-                            <input type="text" name="name" size="20" required><br>
-                            <label>Отчество:</label><br>
-                            <input type="text" name="patronymic" size="20" required><br>
-                            <label>Возраст:</label><br>
-                            <input type="number" name="age" min="18" max="120" size="20" required><br>
-                            <label>Идентификационный номер:</label><br>
-                            <input type="text" name="passportID" size="20" required><br>
-                            <label>Телефон:</label><br>
-                            <input type="tel" name="phone" size="20" required><br>
-                            <label>E-mail:</label><br>
-                            <input type="email" name="email" size="20" autocomplete="on" required><br>
-                            <label>Пароль:</label><br>
-                            <input type="text" name="password" size="20" required><br>
-                            <label>Подтвердить пароль:</label><br>
-                            <input type="text" name="password2" size="20" required><br>
-                            <label><input type="checkbox" name="agreement" value="agree" required>Я согласен(а) на обработку персональных данных</label><br>
+    <meta charset="UTF-8">
+    <title>Онлайн-кредит</title>
+    <link rel="stylesheet" href="/css/signup.css">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"/>
+</head>
+<body>
+
+<div class="w-100 p-4 d-flex align-items-center justify-content-center" th:fragment="login-modal">
+    <section id="section_to_be_upper" class="text-center text-lg-start w-75">
+        <div class="card mb-3">
+            <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-2">Регистрация</p>
+
+            <form class="mx-1 mx-md-4" action="/auth/signup" method="post">
+
+                <div class="container">
+                    <div class="row d-flex align-items-center justify-content-around">
+                        <div class="col-md-6">
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="surname">Фамилия</label>
+                                <input type="text" id="surname" name="surname" class="form-control"
+                                       minlength="2" required/>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="name">Имя</label>
+                                <input type="text" id="name" name="name" class="form-control"
+                                       minlength="2" required/>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="patronymic">Отчество</label>
+                                <input type="text" id="patronymic" name="patronymic"
+                                       minlength="2" class="form-control"/>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="age">Возраст</label>
+                                <input type="number" id="age" name="age" class="form-control"
+                                       min="18" max="120" step="1" required pattern="\d*" placeholder="18+"/>
+                            </div>
                         </div>
-                        <div>
-                            <input type="submit" value="Зарегистрироваться"/>
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="phone">Телефон</label>
+                                <input type="text" id="phone" name="phone" class="form-control" required
+                                       pattern="^\+375\((29|24|25|44|33)\)(\d{3})-(\d{2})-(\d{2})$"
+                                       placeholder="+375(29)111-11-11"/>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="email">E-mail</label>
+                                <input type="email" id="email" name="email" class="form-control" required
+                                       placeholder="text@text.text"/>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="password">Пароль</label>
+                                <div class="input-group mb-3">
+                                    <input type="password" id="password" name="password" minlength="8"
+                                           class="form-control" required/>
+                                    <span class="input-group-text">
+                                        <i class="bi bi-eye-slash" id="togglePassword"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="password2">Подтвердить пароль</label>
+                                <div class="input-group mb-3">
+                                    <input type="password" id="password2" name="password2" minlength="8"
+                                           class="form-control" required/>
+                                    <span class="input-group-text">
+                                        <i class="bi bi-eye-slash" id="togglePassword2"></i>
+                                    </span>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </fieldset>
+
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-md-6">
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="passportID">Идентификационный номер паспорта</label>
+                                <input type="text" id="passportID" name="passportID" class="form-control" required
+                                       pattern="^(\d{7})(A|B|C|K|E|M|H)(\d{3})(PB|BA|BI)(\d{1})$"
+                                       placeholder="ЦЦЦЦЦЦЦБЦЦЦББЦ"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-check d-flex justify-content-center mt-4 mb-4">
+                                <input class="form-check-input me-2 mb-0" type="checkbox" value="" id="agreement"
+                                       name="agreement" required/>
+                                <label class="form-check-label" for="agreement">
+                                    Я согласен(а) на обработку персональных данных
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="d-flex justify-content-center mx-4 my-2 mb-lg-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Зарегистрироваться</button>
+                </div>
+
             </form>
-        </main>
-    </body>
+        </div>
+    </section>
+</div>
+
+<script>
+    let password = document.getElementById('password');
+    let password2 = document.getElementById('password2');
+
+    function validatePassword() {
+        if (password.value !== password2.value) {
+            password2.setCustomValidity("Пароли не совпадают");
+        } else {
+            password2.setCustomValidity('');
+        }
+    }
+
+    password.onchange = validatePassword;
+    password2.onkeyup = validatePassword;
+
+
+    const togglePassword = document.getElementById('togglePassword');
+    const togglePassword2 = document.getElementById('togglePassword2');
+
+    function processClick(eye, password) {
+        // Toggle the type attribute using
+        // getAttribure() method
+        const type = password
+            .getAttribute('type') === 'password' ?
+            'text' : 'password';
+
+        password.setAttribute('type', type);
+
+        // Toggle the eye and bi-eye icon
+        eye.classList.toggle('bi-eye');
+    }
+
+    togglePassword.addEventListener('click', () => processClick(togglePassword, password));
+    togglePassword2.addEventListener('click', () => processClick(togglePassword2, password2))
+
+</script>
+
+</body>
 </html>
+
