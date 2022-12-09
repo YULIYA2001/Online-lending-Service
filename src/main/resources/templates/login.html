@@ -16,7 +16,11 @@
 </head>
 <body>
 
+<div th:if="${#ctx.containsVariable('msgNoUserFound')}" th:text="${msgNoUserFound}"
+     id="box" class="alert alert-danger w-25 mt-3 mx-auto" style="margin-bottom: -4%" role="alert">
+</div>
 <div class="w-100 p-4 d-flex align-items-center justify-content-center" th:fragment="login-modal">
+
     <section id="section_to_be_upper" class="text-center text-lg-start w-75">
         <div class="card mb-3">
             <div class="row g-0 d-flex align-items-center">
@@ -40,9 +44,9 @@
                             <!-- Password input -->
                             <div class="form-outline">
                                 <label class="form-label" for="password">Пароль</label>
-                                <div class="input-group mb-3">
-                                <input type="password" id="password" name="password" class="form-control"
-                                       required><br>
+                                <div class="input-group">
+                                    <input type="password" id="password" name="password" class="form-control"
+                                           minlength="8" required><br>
                                     <span class="input-group-text">
                                         <i class="bi bi-eye-slash" id="togglePassword"></i>
                                     </span>
@@ -51,8 +55,8 @@
 
                             <!-- Submit button -->
                             <div class="col d-flex justify-content-between mt-4">
-                                <button id="btnsubmit" type="submit" class="btn btn-primary btn-block mb-4 px-5"
-                                        onclick="validatePhoneOrEmail(this.id)">Войти
+                                <button type="submit" class="btn btn-primary btn-block mb-4 px-5">
+                                    Войти
                                 </button>
                                 <a href="/auth/signup">Регистрация</a>
                             </div>
@@ -78,6 +82,11 @@
     }
 
     togglePassword.addEventListener('click', () => processClick(togglePassword, password));
+
+    setTimeout(() => {
+        const box = document.getElementById('box');
+        box.style.display = 'none';
+    }, 3000);
 </script>
 
 </body>

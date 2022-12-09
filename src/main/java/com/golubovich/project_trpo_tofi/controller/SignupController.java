@@ -8,11 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,17 +35,21 @@ public class SignupController {
 
     @PostMapping("/signup")
     public String addUser(User user, UserDetails userDetails, Model model) {
-        Optional<User> optionalUserFromDb = userRepository.findByEmailOrPhone(user.getEmail(), user.getPhone());
-        User userFromDb = optionalUserFromDb.orElse(null);
+        List<User> usersFromDb = userRepository.findByEmailOrPhone(user.getEmail(), user.getPhone());
+        User userFromDb = usersFromDb.isEmpty() ? null : usersFromDb.get(0);
 
         if (userFromDb != null) {
             if (userFromDb.getEmail().equals(user.getEmail())) {
                 model.addAttribute("msgExistingEmail", "Пользователь с таким email уже существует!");
-                return "redirect:/auth/signup";
+                user.setUserDetails(userDetails);
+                model.addAttribute("user", user);
+                return "signup";
             }
-            else if (userFromDb.getEmail().equals(user.getPhone())) {
+            else if (userFromDb.getPhone().equals(user.getPhone())) {
                 model.addAttribute("msgExistingPhone", "Пользователь с таким телефоном уже существует!");
-                return "redirect:/auth/signup";
+                user.setUserDetails(userDetails);
+                model.addAttribute("user", user);
+                return "signup";
             }
         }
 
@@ -51,4 +60,5 @@ public class SignupController {
 
         return "redirect:/auth/login";
     }
+
 }

@@ -37,7 +37,7 @@ public class UserDetails {
     @Temporal(TemporalType.TIMESTAMP)
     private Date regDate = new Date();
 
-    @Column(nullable = false, unique = true, length = 15)
+    @Column(nullable = false, length = 14)
     private String passportID;
 
     @OneToOne(mappedBy = "userDetails")

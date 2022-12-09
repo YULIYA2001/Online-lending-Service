@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -21,8 +23,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String phoneOrEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByEmailOrPhone(phoneOrEmail, phoneOrEmail).orElseThrow(() ->
-                new UsernameNotFoundException("User does not exists"));
+//        User user = userRepository.findByEmailOrPhone(phoneOrEmail, phoneOrEmail).orElseThrow(() ->
+//                new UsernameNotFoundException("User does not exists"));
+//        return SecurityUser.fromUser(user);
+        List<User> users = userRepository.findByEmailOrPhone(phoneOrEmail, phoneOrEmail);
+        if (users.isEmpty()) {
+            throw new UsernameNotFoundException("User does not exists");
+        }
+        User user = users.get(0);
         return SecurityUser.fromUser(user);
     }
 }

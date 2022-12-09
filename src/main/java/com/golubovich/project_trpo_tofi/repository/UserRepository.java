@@ -10,7 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmailOrPhone(String email, String phone);
+    List<User> findByEmailOrPhone(String email, String phone);
+
     Optional<User> findByEmail(String email);
 
     @Query(value="SELECT * FROM users JOIN user_details ON users.user_details_id = user_details.id WHERE users.role != 'SUPER_ADMIN' ORDER BY users.id",
