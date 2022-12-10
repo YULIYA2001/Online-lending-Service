@@ -14,11 +14,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    @Query(value="SELECT * FROM users JOIN user_details ON users.user_details_id = user_details.id WHERE users.role != 'SUPER_ADMIN' ORDER BY users.id",
+    Optional<User> findByPhone(String phone);
+
+    @Query(value = "SELECT * FROM users JOIN user_details ON users.user_details_id = user_details.id WHERE users.role != 'SUPER_ADMIN' ORDER BY users.id",
             nativeQuery = true)
     List<User> findAllWithDetails();
 
-    @Query(value="SELECT * FROM users JOIN user_details ON users.user_details_id = user_details.id WHERE users.id = ?1",
+    @Query(value = "SELECT * FROM users JOIN user_details ON users.user_details_id = user_details.id WHERE users.id = ?1",
             nativeQuery = true)
     User findByIdWithDetails(Long id);
+
 }

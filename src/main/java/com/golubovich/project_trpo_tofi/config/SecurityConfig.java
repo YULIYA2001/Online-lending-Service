@@ -96,9 +96,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             response.sendRedirect("/auth/login");
         };
     }
-
-//    @Bean
-//    public AccessDeniedHandler accessDeniedHandler() {
-//        return new CustomAccessDeniedHandler();
-//    }
 }
