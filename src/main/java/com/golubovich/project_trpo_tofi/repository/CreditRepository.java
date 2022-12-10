@@ -8,6 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface CreditRepository extends CrudRepository<Credit, Long> {
-    Iterable<Credit> findAll();
-    Optional<Credit> findById(Long id);
 }

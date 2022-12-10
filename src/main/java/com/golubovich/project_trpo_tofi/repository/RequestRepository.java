@@ -8,6 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface RequestRepository extends CrudRepository<Request, Long> {
-    Iterable<Request> findAll();
-    Optional<Request> findById(Long id);
 }

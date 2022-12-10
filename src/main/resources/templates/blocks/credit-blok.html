@@ -1,13 +1,72 @@
 <div class="col" th:fragment="credit">
     <div class="card mb-4 rounded-3 shadow-sm">
-        <div class="card-body">
-            <p th:text="${credit.getCreditType()}"/>
-            <h3 class="card-title pricing-card-title">
-                <span th:each="creditVariants : ${credit.getCreditTermRateVariants()}" th:text="${creditVariants.getRate()} + '%  '"/>
-            </h3>
-            <p th:text="${credit.getBank().getName()}"/>
-            <p th:text="'(до ' + ${credit.getMaxSum()} + ' бел.руб.)'"/>
-            <a th:href="@{/form-online-request/{id}(id=${credit.getId()})}" class="w-100 btn btn-lg btn-outline-primary">Оформить заявку</a>
+        <div class="card-header h5 text-truncate" th:text="${credit.getCreditType()}"></div>
+        <div class="card-body text-dark d-flex flex-column align-items-center">
+            <ul class="card-text list-unstyled d-flex flex-column align-items-start">
+                <li>
+                    <i class="fas fa-chevron-circle-down"></i>
+                    <span class="text-truncate" th:each="creditVariants : ${credit.getCreditTermRateVariants()}"
+                          th:text="${creditVariants.getRate()} + '%, '"/>
+                </li>
+                <li>
+                    <i class="fas fa-chevron-circle-down"></i>
+                    <span class="text-truncate" th:text="'До ' + ${credit.getMaxSum()} + ' бел.руб.'"></span>
+                </li>
+                <li>
+                    <i class="fas fa-hotel"></i>
+                    <span class="text-truncate" th:text="${credit.getBank().getName()}"></span>
+                </li>
+            </ul>
+<!--            <a th:href="@{/form-online-request/{id}(id=${credit.getId()})}"-->
+<!--               class="w-75 btn btn-lg btn-outline-dark">Оформить заявку</a>-->
+            <div>
+                <!-- Modal btn -->
+                <button th:id="${'myBtn'+credit.getId()}" th:name="${credit.getId()}"
+                        type="button" class="btn btn-outline-dark"
+                        onclick="callModal(this.name)">Оформить заявку</button>
+
+                <!-- Modal window -->
+                <div class="modal" th:id="${'myModal'+credit.getId()}"
+                     style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Оформление онлайн-заявки</h5>
+                                <button th:id="${'btnClose'+credit.getId()}" th:name="${credit.getId()}"
+                                        type="button" class="btn-close"
+                                        onclick="closeModal(this.name)"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div th:replace="/online-request :: online-request-form"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function callModal(btn_name) {
+                        if ("[[${#httpServletRequest.getRemoteUser()}]]" !== "") {
+                            var modal = document.getElementById("myModal" + btn_name);
+                            modal.style.display = "block";
+                        }
+                        else {
+                            window.location.href = "/auth/login";
+                        }
+                    }
+                    function closeModal(btn_name) {
+                        var modal = document.getElementById("myModal"+btn_name);
+                        modal.style.display = "none";
+                    }
+                </script>
+            </div>
+
+            </div>
         </div>
     </div>
+
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
 </div>
