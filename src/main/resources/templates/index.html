@@ -24,6 +24,23 @@
         <div th:replace="blocks/footer ::footer"></div>
 
     </body>
+
+    <!-- Обработка нажатия "Оформить заявку" на каждом кредите -->
+    <script>
+        function callModal(btn_name) {
+            if ("[[${#httpServletRequest.getRemoteUser()}]]" !== "") {
+                var modal = document.getElementById("myModal" + btn_name);
+                modal.style.display = "block";
+            }
+            else {
+                window.location.href = "/auth/login";
+            }
+        }
+        function closeModal(btn_name) {
+            var modal = document.getElementById("myModal"+btn_name);
+            modal.style.display = "none";
+        }
+    </script>
 </html>
 
 
