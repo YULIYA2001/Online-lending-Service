@@ -3,17 +3,25 @@ package com.golubovich.project_trpo_tofi.service;
 import com.golubovich.project_trpo_tofi.model.Role;
 import com.golubovich.project_trpo_tofi.model.User;
 import com.golubovich.project_trpo_tofi.repository.UserRepository;
+import com.golubovich.project_trpo_tofi.security.UserDetailsServiceImpl;
 import com.golubovich.project_trpo_tofi.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserDetailsServiceImpl detailsService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -42,6 +50,51 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
+    }
+
+    public String updateUser(User user, String passwordOld) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User old = this.findByEmail(authentication.getName());
+
+        if (old != null) {
+            if (!Objects.equals(old.getEmail(), user.getEmail())) {
+                if (this.findByEmail(user.getEmail()) != null) {
+                    return "email";
+                }
+            }
+            if (!Objects.equals(old.getPhone(), user.getPhone())) {
+                if (this.findByPhone(user.getPhone()) != null) {
+                    return "phone";
+                }
+            }
+            if (!Objects.equals(passwordOld, "")) {
+                if (!passwordEncoder.matches(passwordOld, old.getPassword())) {
+                    return "password";
+                }
+                if (!Objects.equals(user.getPassword(), "")) {
+                    old.setPassword(passwordEncoder.encode(user.getPassword()));
+                }
+            }
+
+            String oldEmail = old.getEmail();
+
+            old.setEmail(user.getEmail());
+            old.setPhone(user.getPhone());
+            old.getUserDetails().setSurname(user.getUserDetails().getSurname());
+            old.getUserDetails().setName(user.getUserDetails().getName());
+            old.getUserDetails().setPatronymic(user.getUserDetails().getPatronymic());
+            old.getUserDetails().setAge(user.getUserDetails().getAge());
+            old.getUserDetails().setPassportID(user.getUserDetails().getPassportID());
+
+            userRepository.save(old);
+
+            if (!Objects.equals(oldEmail, old.getEmail())) {
+                UserDetails userDetails = detailsService.loadUserByUsername(user.getEmail());
+                Authentication auth = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        }
+        return "";
     }
 
 //    Optional<User> findByEmail(String email);

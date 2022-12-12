@@ -1,7 +1,6 @@
-<table class="table" th:fragment="user-requests-table">
+<table class="table align-middle" th:fragment="user-requests-table">
     <thead>
     <tr>
-        <th scope="col">№</th>
         <th scope="col">ID</th>
         <th scope="col">Банк</th>
         <th scope="col">Название кредита</th>
@@ -15,51 +14,90 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="request : ${user.getRequests()}">
-        <th scope="row" th:text="${requestStat.index}+1"></th>
-        <div th:insert="blocks/user-requests-list :: request-row"></div>
-        <td>
-            <a th:if="${request.getRequestStatus().name()=='NEW'}" th:href="@{/admin/requests/{id}(id=${request.getId()})}">
-                <button type="button" class="btn btn-outline-primary">Cha</button>
-            </a>
-        </td>
-        <td>
-            <button type="button" class="btn btn-outline-danger">Del</button>
-        </td>
-    </tr>
+        <tr th:each="request : ${user.getRequests()}"
+            th:if="${request.getRequestStatus().name!='DELETED'}">
+
+            <th:block th:replace="blocks/user-requests-list :: request-row"></th:block>
+
+            <td>
+                <a th:if="${request.getRequestStatus().name()=='NEW'}"
+                   th:href="@{/online-request/update-{id}(id=${request.getId()})}">
+                    <button type="button" class="btn btn-outline-primary">
+                        <i class="far fa-edit"></i>
+                    </button>
+                </a>
+            </td>
+            <td>
+                <a th:href="@{/online-request/delete-{id}(id=${request.getId()})}">
+                    <button type="button" class="btn btn-outline-danger">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </a>
+            </td>
+        </tr>
+
+        <script>
+            function callModal(btn_name) {
+                const modal = document.getElementById("myModal" + btn_name);
+                modal.style.display = "block";
+            }
+            function closeModal(btn_name) {
+                const modal = document.getElementById("myModal" + btn_name);
+                modal.style.display = "none";
+            }
+        </script>
+
     </tbody>
 </table>
 
 
 
-<div th:fragment="request-row">
+<th:block th:fragment="request-row">
     <td th:text="${request.getId()}"></td>
     <td th:text="${request.getCredit().getBank().getName()}"></td>
     <td th:text="${request.getCredit().getCreditType()}"></td>
     <td th:text="${request.getSum()}"></td>
     <td th:text="${request.getCreditTermRateVariant().getTerm()}"></td>
     <td th:text="${request.getCreditTermRateVariant().getRate()}"></td>
-    <td th:text="${request.getRequestStatus().name()}" th:with="request1=${request}"></td>
+    <td th:text="${request.getRequestStatus().getTitle()}" th:with="request1=${request}"></td>
     <td>
         <div th:if="${request.getRequestStatus().name()=='COMPLETED'}">
-            <div th:replace="blocks/modal-window :: modal-window-call-btn"></div>
-            <div th:with="modalWindowTitle=${'Ответ на заявку №'+request.getId()}" th:insert="blocks/modal-window :: modal-window"></div>
+            <button th:id="${'myBtn'+request.getId()}" th:name="${request.getId()}"
+                    type="button" class="btn btn-link link-dark" onclick="callModal(this.name)">Показать</button>
+            <div class="modal" th:id="${'myModal'+request.getId()}"
+                 style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content d-flex flex-column justify-content-center align-items-center">
+                        <div class="modal-header bg-light w-100 text-center">
+                            <h4 class="modal-title" th:text="${request.getResponse().getSum().intValue()!=0 ?
+                            'Заявка № ' + request.getId() + ' одобрена' :
+                            'Заявка № ' + request.getId() + ' отклонена'}"></h4>
+                        </div>
+                        <div class="modal-body mx-3 d-flex flex-column align-items-center">
+                            <th:block th:if="${request.getResponse().getSum().intValue()!=0}">
+                                <p><b><i>Благодарим Вас за обращение в [[${request.getCredit().getBank().getName()}]]</i></b></p>
+                                <p>По кредиту "[[${request.getCredit().getCreditType()}]]" одобрено
+                                    <b>[[${request.getResponse().getSum()}]]</b> бел.руб.
+                                    (запрашивалось [[${request.getSum()}]] бел.руб.).
+                                </p >
+                                <ul class="d-flex flex-column align-items-start">
+                                    <li>Ставка - [[${request.getCreditTermRateVariant().getRate()}]]%</li>
+                                    <li>Срок - [[${request.getCreditTermRateVariant().getTerm()}]]</li>
+                                    <li>Ежемесячный платеж - [[${request.getResponse().getPayment()}]] бел.руб.</li>
+                                </ul>
+                                <p class="mb-0">В ближайшее время с Вами свяжется сотрудник банка</p>
+                            </th:block>
+                            <th:block th:if="${request.getResponse.getSum().intValue()==0}">
+                                <p><b><i>Благодарим Вас за обращение в [[${request.getCredit().getBank().getName()}]]</b></i></p>
+                                <p class="mb-0">К сожалению Ваша заявка отклонена.</p>
+                            </th:block>
+                        </div>
+                        <button th:id="${'btnClose'+request.getId()}" th:name="${request.getId()}"
+                                type="button" class="btn btn-outline-secondary mb-2 w-25"
+                                onclick="closeModal(this.name)">Ок</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </td>
-</div>
-
-
-
-
-<div th:fragment="user-request-response">
-    <div th:if="${request.getResponse().getSum().intValue()!=0}">
-        <h3>Заявка одобрена</h3>
-        <p th:text="${'Кредит: ' + request.getCredit().getCreditType() + '  ' + request.getCreditTermRateVariant().getRate() + '%'}"></p>
-        <p th:text="${'Одобренная сумма: ' + request.getResponse().getSum()}"></p>
-        <p th:text="${'Желаемая сумма: ' + request.getSum()}"></p>
-        <p>С Вами свяжется сотрудник банка</p>
-    </div>
-    <div th:if="${request.getResponse.getSum().intValue()==0}">
-        <h3>К сожалению Ваша заявка отклонена.</h3>
-    </div>
-</div>
+</th:block>

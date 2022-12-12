@@ -10,9 +10,9 @@ public interface RequestService {
 
     List<Request> findAll();
 
-    void createRequest(Request request);
+    void create(Request request);
 
-    void updateRequest(Request request);
+    void update(Request request);
 
     void deleteById(Long id);
 }

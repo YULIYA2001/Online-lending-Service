@@ -2,6 +2,7 @@ package com.golubovich.project_trpo_tofi.service;
 
 import com.golubovich.project_trpo_tofi.model.Request;
 import com.golubovich.project_trpo_tofi.model.RequestStatus;
+import com.golubovich.project_trpo_tofi.model.Role;
 import com.golubovich.project_trpo_tofi.model.User;
 import com.golubovich.project_trpo_tofi.repository.RequestRepository;
 import com.golubovich.project_trpo_tofi.service.api.RequestService;
@@ -32,7 +33,7 @@ public class RequestServiceImpl implements RequestService {
         return (List<Request>) requestRepository.findAll();
     }
 
-    public void createRequest(Request request) {
+    public void create(Request request) {
         request.setRequestStatus(RequestStatus.NEW);
         request.setCredit(request.getCreditTermRateVariant().getCredit());
 
@@ -44,11 +45,29 @@ public class RequestServiceImpl implements RequestService {
         requestRepository.save(request);
     }
 
-    public void updateRequest(Request request) {
-        // TODO
+    public void update(Request request) {
+        Request old = requestRepository.findById(request.getId()).orElse(null);
+        if (old != null) {
+            request.setRequestStatus(old.getRequestStatus());
+            request.setCredit(old.getCredit());
+            request.setUser(old.getUser());
+        }
+
+        requestRepository.save(request);
     }
 
     public void deleteById(Long id) {
-        requestRepository.deleteById(id);
+        Request request = requestRepository.findById(id).orElse(null);
+        if (request != null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            if (userService.findByEmail(authentication.getName()).getRole() == Role.USER) {
+                request.setRequestStatus(RequestStatus.DELETED);
+                requestRepository.save(request);
+            }
+            else {
+                requestRepository.deleteById(id);
+            }
+        }
     }
 }

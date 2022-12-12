@@ -23,6 +23,9 @@ public class Bank {
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 
+    @Column(length = 2000)
+    private String aboutInfo;
+
     @Column(nullable = false)
     private int trustZone;
 

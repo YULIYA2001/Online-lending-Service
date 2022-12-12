@@ -6,13 +6,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <div th:insert="blocks/header ::header"></div>
+    <div th:replace="blocks/header :: header"></div>
     <div>Оформление онлайн-заявки</div>
-    <form th:action="@{/create-online-request/{id}(id=${credit.getId()})}" method="post"
+    <form th:action="@{/online-request/create}" method="post"
           th:fragment="online-request-form">
         <div class="mx-3">
             <label>Кредит</label>
-            <p class="mb-0" th:text="${credit.getCreditType() + ' (до ' + credit.getMaxSum() + 'бел.руб.'}"></p>
+            <p class="mb-0" th:text="${credit.getCreditType() + ' (до ' + credit.getMaxSum() + 'бел.руб.)'}"></p>
 
             <label class="mt-1">Ставка и срок</label>
             <select name="creditTermRateVariant" th:id="${'term-rate'+credit.getId()}" class="form-select" required>
@@ -44,7 +44,7 @@
                 <span class="input-group-text" style="white-space:pre"> 0  -  10 </span>
             </div>
 
-            <label class="mt-1">Сумма платежей по кредитам</label>
+            <label class="mt-1">Сумма платежей по кредитам (в месяц)</label>
             <div class="input-group">
                 <span class="input-group-text"> 0.00</span>
                 <input th:id="${'payments'+credit.getId()}" type="number" class="form-control"
@@ -53,7 +53,7 @@
             </div>
 
             <div class="mx-2 mt-3 mb-3 form-check">
-                <input type="checkbox" class="form-check-input" name="agreement">
+                <input type="checkbox" class="form-check-input" name="agreement" required>
                 <label class="form-check-label">Я согласен(а) на обработку персональных данных</label>
             </div>
 

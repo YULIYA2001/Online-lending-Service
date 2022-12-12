@@ -14,7 +14,9 @@
                 </li>
                 <li>
                     <i class="fas fa-hotel"></i>
-                    <span class="text-truncate" th:text="${credit.getBank().getName()}"></span>
+                    <a th:href="@{/bank-about/{id}(id=${credit.getBank().getId()})}" class="link-dark">
+                        <span class="text-truncate" th:text="${credit.getBank().getName()}"></span>
+                    </a>
                 </li>
             </ul>
 <!--            <a th:href="@{/form-online-request/{id}(id=${credit.getId()})}"-->

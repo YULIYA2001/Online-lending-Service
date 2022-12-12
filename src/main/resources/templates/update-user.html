@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online request</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/signup.css">
+    <link rel="stylesheet" href="/css/all.css">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"/>
+</head>
+<body>
+    <div th:replace="blocks/header :: header"></div>
+
+    <div th:if="${#ctx.containsVariable('msgExistingEmail')}" th:text="${msgExistingEmail}"
+         id="box1" class="alert alert-danger mx-auto my-2 w-25" role="alert">
+    </div>
+    <div th:if="${#ctx.containsVariable('msgExistingPhone')}" th:text="${msgExistingPhone}"
+         id="box2" class="alert alert-danger mx-auto my-2 w-25" role="alert">
+    </div>
+    <div th:if="${#ctx.containsVariable('msgWrongPasswordOld')}" th:text="${msgWrongPasswordOld}"
+         id="box3" class="alert alert-danger mx-auto my-2 w-25" role="alert">
+    </div>
+
+    <h4 class="text-center">Изменение личных данных</h4>
+    <div class="w-100 p-4 d-flex align-items-center justify-content-center" th:fragment="login-modal">
+        <section id="section_to_be_upper" class="text-center text-lg-start w-75">
+
+            <form class="mx-1 mx-md-4" action="/cabinet/update-user" method="post">
+
+                <div class="container">
+                    <div class="row d-flex align-items-center justify-content-around">
+                        <div class="col-md-6">
+
+                            <input type="text" style="display: none" name="userOld"
+                                   th:value="${user}"/>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="surname">Фамилия</label>
+                                <input type="text" id="surname" name="surname" class="form-control"
+                                       minlength="2" required
+                                       th:value="${user.getUserDetails().getSurname()}"/>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="name">Имя</label>
+                                <input type="text" id="name" name="name" class="form-control"
+                                       minlength="2" maxlength="50" required
+                                       th:value="${user.getUserDetails().getName()}"/>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="patronymic">Отчество</label>
+                                <input type="text" id="patronymic" name="patronymic"
+                                       minlength="2" maxlength="50" class="form-control"
+                                       th:value="${user.getUserDetails().getPatronymic()}"/>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="age">Возраст</label>
+                                <input type="number" id="age" name="age" class="form-control"
+                                       min="18" max="120" step="1" required pattern="\d*" placeholder="18+"
+                                       th:value="${user.getUserDetails().getAge()}"/>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="phone">Телефон</label>
+                                <input type="text" id="phone" name="phone" class="form-control" required
+                                       pattern="^\+375\((29|24|25|44|33)\)(\d{3})-(\d{2})-(\d{2})$"
+                                       placeholder="+375(29)111-11-11"
+                                       th:value="${user.getPhone()}"/>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="email">E-mail</label>
+                                <input type="email" id="email" name="email" class="form-control" required
+                                       maxlength="50" placeholder="text@text.text"
+                                       th:value="${user.getEmail()}"/>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="passwordOld">Старый пароль</label>
+                                <div class="input-group">
+                                    <input type="password" id="passwordOld" name="passwordOld" minlength="8"
+                                           class="form-control"
+                                           th:value="${#ctx.containsVariable('msgWrongPasswordOld') ? passwordOld : ''}" />
+                                    <span class="input-group-text">
+                                        <i class="bi bi-eye-slash" id="togglePasswordOld"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="password">Новый пароль</label>
+                                <div class="input-group">
+                                    <input type="password" id="password" name="password" minlength="8"
+                                           class="form-control"
+                                           th:value="${#ctx.containsVariable('msgWrongPasswordOld') ? user.getPassword() : ''}"/>
+                                    <span class="input-group-text">
+                                        <i class="bi bi-eye-slash" id="togglePassword"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-md-6">
+
+                            <div class="form-outline flex-fill mb-2">
+                                <label class="form-label mb-0" for="passportID">Идентификационный номер паспорта</label>
+                                <input type="text" id="passportID" name="passportID" class="form-control" required
+                                       pattern="^(\d{7})(A|B|C|K|E|M|H)(\d{3})(PB|BA|BI)(\d{1})$"
+                                       placeholder="ЦЦЦЦЦЦЦБЦЦЦББЦ"
+                                       th:value="${user.getUserDetails().getPassportID()}"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-check d-flex justify-content-center mt-4 mb-4">
+                                <input class="form-check-input me-2 mb-0" type="checkbox" value="" id="agreement"
+                                       name="agreement" required/>
+                                <label class="form-check-label" for="agreement">
+                                    Я согласен(а) на обработку персональных данных
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="d-flex justify-content-center mx-4 mt-3 mb-lg-4">
+                    <button type="submit" class="btn btn-outline-dark btn-lg" onclick="checkPasswords()">Сохранить</button>
+                </div>
+
+            </form>
+
+        </section>
+    </div>
+
+    <script>
+        // show/hide eye on password
+        const passwordOld = document.getElementById('passwordOld');
+        const password = document.getElementById('password');
+
+        const togglePasswordOld = document.getElementById('togglePasswordOld');
+        const togglePassword = document.getElementById('togglePassword');
+
+        function processClick(eye, password) {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            eye.classList.toggle('bi-eye');
+        }
+
+        togglePasswordOld.addEventListener('click', () => processClick(togglePasswordOld, passwordOld));
+        togglePassword.addEventListener('click', () => processClick(togglePassword, password));
+
+        // check that old password entered when new entered
+        function checkPasswords() {
+            if (password.value !== '' && passwordOld.value === '') {
+                passwordOld.setCustomValidity("Введите старый пароль");
+            } else {
+                passwordOld.setCustomValidity("");
+            }
+        }
+
+        password.onchange = checkPasswords;
+
+        // auto close wrong input message
+        setTimeout(() => {
+            const box = document.getElementById('box1');
+            box.style.display = 'none';
+        }, 3000); // time in milliseconds
+        setTimeout(() => {
+            const box = document.getElementById('box2');
+            box.style.display = 'none';
+        }, 3000); // time in milliseconds
+        setTimeout(() => {
+            const box = document.getElementById('box3');
+            box.style.display = 'none';
+        }, 3000); // time in milliseconds
+    </script>
+
+    <div th:replace="blocks/footer ::footer"></div>
+</body>
+</html>

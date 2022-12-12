@@ -20,6 +20,9 @@ public class Response {
     @Column(precision=18, scale=2, nullable = false)
     private BigDecimal sum;
 
+    @Column(precision=18, scale=2, nullable = false)
+    private BigDecimal payment;
+
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date datetime = new Date();
