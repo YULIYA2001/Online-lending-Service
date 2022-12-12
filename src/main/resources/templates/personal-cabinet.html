@@ -13,14 +13,13 @@
 <body>
     <div th:replace="blocks/header :: header"></div>
 
-    <section>
+    <section th:if="${user.getRole().name()=='USER'}">
         <h4 style="margin-top: -1%" class="mx-3">Онлайн-заявки</h4>
         <div class="container m-10 p-30">
             <div th:replace="blocks/user-requests-list :: user-requests-table"></div>
         </div>
-
-        <a class="mx-3 btn btn-link link-dark" th:href="@{/cabinet/update-user}">Изменить личные данные</a>
     </section>
+    <a class="mx-3 mt-2 btn btn-link link-dark" th:href="@{/cabinet/update-user}">Изменить личные данные</a>
 
     <div th:replace="blocks/footer ::footer"></div>
 </body>

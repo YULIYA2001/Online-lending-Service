@@ -2,8 +2,8 @@ package com.golubovich.project_trpo_tofi.model;
 
 public enum RequestStatus {
     NEW ("Новая"),
-    REJECTED("Откланена"),
-    COMPLETED("Выполнена"),
+    REJECTED("Отклонена"),
+    COMPLETED("Обработана"),
     DELETED("Удалена");
 
     private final String title;

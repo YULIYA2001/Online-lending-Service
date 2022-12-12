@@ -1,24 +1,18 @@
 package com.golubovich.project_trpo_tofi.controller;
 
-import com.golubovich.project_trpo_tofi.model.Request;
 import com.golubovich.project_trpo_tofi.model.User;
 import com.golubovich.project_trpo_tofi.model.UserDetails;
-import com.golubovich.project_trpo_tofi.repository.RequestRepository;
-import com.golubovich.project_trpo_tofi.repository.UserRepository;
 import com.golubovich.project_trpo_tofi.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Objects;
-import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/cabinet")
@@ -31,6 +25,7 @@ public class PersonalCabinetController  {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('user_admin:write')")
     public String cabinet(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
@@ -39,7 +34,8 @@ public class PersonalCabinetController  {
     }
 
     @GetMapping("/update-user")
-    public String updateUserForm(Long id, Model model) {
+    @PreAuthorize("hasAuthority('user_admin:write')")
+    public String updateUserForm(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
         model.addAttribute("user", user);
@@ -47,6 +43,7 @@ public class PersonalCabinetController  {
     }
 
     @PostMapping("/update-user")
+    @PreAuthorize("hasAuthority('user_admin:write')")
     public String updateUser(User user, UserDetails userDetails, String passwordOld, Model model) {
         user.setUserDetails(userDetails);
 
