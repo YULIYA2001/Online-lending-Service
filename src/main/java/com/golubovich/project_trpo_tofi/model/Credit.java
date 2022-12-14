@@ -11,22 +11,19 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"requests", "creditTermRateVariants"})
-@EqualsAndHashCode(exclude = {"requests", "creditTermRateVariants"})
+@ToString(exclude = {"creditTermRateVariants"})
+@EqualsAndHashCode(exclude = {"creditTermRateVariants"})
 @Table(name = "Credits")
 public class Credit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 200)
+    @Column(nullable = false, length = 200)
     private String creditType;
 
     @Column(precision=18, scale=2, nullable = false)
     private BigDecimal maxSum;
-
-    @OneToMany(mappedBy = "credit", cascade = CascadeType.ALL)
-    private Set<Request> requests;
 
     @ManyToOne
     @JsonIgnore

@@ -16,9 +16,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByPhone(String phone);
 
-    @Query(value = "SELECT * FROM users JOIN user_details ON users.user_details_id = user_details.id WHERE users.role != 'SUPER_ADMIN' ORDER BY users.id",
+    @Query(value = "SELECT * FROM users JOIN user_details ON users.user_details_id = user_details.id" +
+            " WHERE users.role = ?1 ORDER BY users.id",
             nativeQuery = true)
-    List<User> findAllWithDetails();
+    List<User> findAllWithDetails(String userRole);
 
     @Query(value = "SELECT * FROM users JOIN user_details ON users.user_details_id = user_details.id WHERE users.id = ?1",
             nativeQuery = true)

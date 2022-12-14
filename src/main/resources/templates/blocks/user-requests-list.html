@@ -52,14 +52,14 @@
 
 
 
-<th:block th:fragment="request-row">
+<th:block th:with="credit=${request.getCreditTermRateVariant().getCredit()}" th:fragment="request-row">
     <td th:text="${request.getId()}"></td>
-    <td th:text="${request.getCredit().getBank().getName()}"></td>
-    <td th:text="${request.getCredit().getCreditType()}"></td>
+    <td th:text="${credit.getBank().getName()}"></td>
+    <td th:text="${credit.getCreditType()}"></td>
     <td th:text="${request.getSum()}"></td>
     <td th:text="${request.getCreditTermRateVariant().getTerm()}"></td>
     <td th:text="${request.getCreditTermRateVariant().getRate()}"></td>
-    <td th:text="${request.getRequestStatus().getTitle()}" th:with="request1=${request}"></td>
+    <td th:text="${request.getRequestStatus().getTitle()}"></td>
     <td>
         <div th:if="${request.getRequestStatus().name()=='COMPLETED'}">
             <button th:id="${'myBtn'+request.getId()}" th:name="${request.getId()}"
@@ -75,8 +75,8 @@
                         </div>
                         <div class="modal-body mx-3 d-flex flex-column align-items-center">
                             <th:block th:if="${request.getResponse().getSum().intValue()!=0}">
-                                <p><b><i>Благодарим Вас за обращение в [[${request.getCredit().getBank().getName()}]]</i></b></p>
-                                <p>По кредиту "[[${request.getCredit().getCreditType()}]]" одобрено
+                                <p><b><i>Благодарим Вас за обращение в [[${credit.getBank().getName()}]]</i></b></p>
+                                <p>По кредиту "[[${credit.getCreditType()}]]" одобрено
                                     <b>[[${request.getResponse().getSum()}]]</b> бел.руб.
                                     (запрашивалось [[${request.getSum()}]] бел.руб.).
                                 </p >
@@ -88,7 +88,7 @@
                                 <p class="mb-0">В ближайшее время с Вами свяжется сотрудник банка</p>
                             </th:block>
                             <th:block th:if="${request.getResponse.getSum().intValue()==0}">
-                                <p><b><i>Благодарим Вас за обращение в [[${request.getCredit().getBank().getName()}]]</b></i></p>
+                                <p><b><i>Благодарим Вас за обращение в [[${credit.getBank().getName()}]]</i></b></p>
                                 <p class="mb-0">К сожалению Ваша заявка отклонена.</p>
                             </th:block>
                         </div>

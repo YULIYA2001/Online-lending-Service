@@ -25,15 +25,6 @@ public class Request {
     @Column(precision=18, scale=2, nullable = false)
     private BigDecimal sum;
 
-    @Column(precision=18, scale=2, nullable = false)
-    private BigDecimal income;
-
-    @Column(nullable = false)
-    private int creditsCount;
-
-    @Column(precision=18, scale=2, nullable = false)
-    private BigDecimal creditsPayments;
-
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date start = new Date();
@@ -49,15 +40,14 @@ public class Request {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "Credit_ID")
-    private Credit credit;
-
-    @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "CreditTermRateVariant_ID")
     private CreditTermRateVariant creditTermRateVariant;
 
     @OneToOne(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
     @PrimaryKeyJoinColumn
     private Response response;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "details_id")
+    private RequestDetails details;
 }

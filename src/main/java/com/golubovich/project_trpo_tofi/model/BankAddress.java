@@ -31,4 +31,9 @@ public class BankAddress {
 
     @OneToMany(mappedBy = "bankAddress", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AddressPhones> phones;
+
+    public BankAddress(String address, Bank bank) {
+        this.address = address;
+        this.bank = bank;
+    }
 }

@@ -1,4 +1,4 @@
-<div th:fragment="user-header">
+<th:block th:fragment="user-header">
     <th scope="col">ID</th>
     <th scope="col">Фамилия</th>
     <th scope="col">Имя</th>
@@ -9,9 +9,21 @@
     <th scope="col">Email</th>
     <th scope="col">Дата регистрации</th>
     <th scope="col">Роль</th>
-</div>
+</th:block>
 
-<div th:fragment="request-header">
+<th:block th:fragment="user-for-admin-header">
+    <th scope="col">Фамилия</th>
+    <th scope="col">Имя</th>
+    <th scope="col">Отчество</th>
+    <th scope="col">Телефон</th>
+    <th scope="col">Возраст</th>
+    <th scope="col">Email</th>
+    <th scope="col">Дата регистрации</th>
+</th:block>
+
+
+
+<th:block th:fragment="request-header">
     <th scope="col">ID</th>
     <th scope="col">ID кредита</th>
     <th scope="col">ID клиента</th>
@@ -23,37 +35,61 @@
     <th scope="col">Выплаты по кредитам</th>
     <th scope="col">Статус</th>
     <th scope="col">ID ответа</th>
-</div>
+</th:block>
 
-<div th:fragment="response-header">
+
+<!--???-->
+<th:block th:fragment="response-header">
     <th scope="col">ID онлайн-заявки</th>
     <th scope="col">Допустимая сумма</th>
     <th scope="col">Дата ответа</th>
-</div>
+</th:block>
 
-<div th:fragment="credit-header">
+
+
+<!--???-->
+<th:block th:fragment="credit-header">
     <th scope="col">ID</th>
     <th scope="col">Банк</th>
     <th scope="col">Наименование кредита</th>
     <th scope="col">Максимальная сумма</th>
     <th scope="col">Ставки и термины</th>
-</div>
+</th:block>
 
-<div th:fragment="bank-header">
+<th:block th:fragment="credit-for-admin-header">
+    <th scope="col">ID</th>
+    <th scope="col">Наименование кредита</th>
+    <th scope="col">Максимальная сумма</th>
+    <th scope="col">Ставки и термины (соотв.)</th>
+</th:block>
+
+
+<!--???-->
+<th:block th:fragment="bank-header">
     <th scope="col">ID</th>
     <th scope="col">Название банка</th>
     <th scope="col">Зона доверия</th>
     <th scope="col">Адреса</th>
-</div>
+</th:block>
 
-<div th:fragment="creditVariant-header">
+<th:block th:fragment="bank-for-admin-header">
+    <th scope="col">Название банка</th>
+    <th scope="col">Зона доверия</th>
+    <th scope="col">Адреса</th>
+</th:block>
+
+
+<!--???-->
+<th:block th:fragment="creditVariant-header">
     <th scope="col">ID</th>
     <th scope="col">Срок</th>
     <th scope="col">Ставка</th>
-</div>
+</th:block>
 
-<div th:fragment="bankAddresses-header">
+
+<!--???-->
+<th:block th:fragment="bankAddresses-header">
     <th scope="col">Название банка</th>
     <th scope="col">Адрес</th>
     <th scope="col">Телефон</th>
-</div>
+</th:block>

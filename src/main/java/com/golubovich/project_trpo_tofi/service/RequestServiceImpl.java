@@ -1,9 +1,6 @@
 package com.golubovich.project_trpo_tofi.service;
 
-import com.golubovich.project_trpo_tofi.model.Request;
-import com.golubovich.project_trpo_tofi.model.RequestStatus;
-import com.golubovich.project_trpo_tofi.model.Role;
-import com.golubovich.project_trpo_tofi.model.User;
+import com.golubovich.project_trpo_tofi.model.*;
 import com.golubovich.project_trpo_tofi.repository.RequestRepository;
 import com.golubovich.project_trpo_tofi.service.api.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +15,9 @@ public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
     private final UserServiceImpl userService;
+
+    @Autowired
+    private BankServiceImpl bankService;
 
     @Autowired
     public RequestServiceImpl(RequestRepository requestRepository, UserServiceImpl userService) {
@@ -35,12 +35,10 @@ public class RequestServiceImpl implements RequestService {
 
     public void create(Request request) {
         request.setRequestStatus(RequestStatus.NEW);
-        request.setCredit(request.getCreditTermRateVariant().getCredit());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
         request.setUser(user);
-        request.setId(null);
 
         requestRepository.save(request);
     }
@@ -49,10 +47,17 @@ public class RequestServiceImpl implements RequestService {
         Request old = requestRepository.findById(request.getId()).orElse(null);
         if (old != null) {
             request.setRequestStatus(old.getRequestStatus());
-            request.setCredit(old.getCredit());
             request.setUser(old.getUser());
         }
 
+        requestRepository.save(request);
+    }
+
+    public void updateStatusReject(Long requestId) {
+        Request request = this.findById(requestId);
+        if (request.getRequestStatus() == RequestStatus.NEW) {
+            request.setRequestStatus(RequestStatus.REJECTED);
+        }
         requestRepository.save(request);
     }
 
@@ -69,5 +74,17 @@ public class RequestServiceImpl implements RequestService {
                 requestRepository.deleteById(id);
             }
         }
+    }
+
+    public List<Request> findAllByBank() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User admin = userService.findByEmail(authentication.getName());
+        if (admin != null) {
+            Bank bank = admin.getBank();
+
+            List <Request> bankRequests = requestRepository.findByBankId(bank.getId());
+            return bankRequests;
+        }
+        return null;
     }
 }

@@ -34,4 +34,8 @@ public class Bank {
 
     @OneToMany(mappedBy = "bank", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Credit> credits;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "admin_id")
+    private User admin;
 }

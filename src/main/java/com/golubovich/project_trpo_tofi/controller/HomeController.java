@@ -32,8 +32,13 @@ public class HomeController {
     public String home(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
-        if (user != null && user.getRole() != Role.USER) {
-            return "/admin/admin-panel";
+        if (user != null) {
+            if (user.getRole() == Role.ADMIN) {
+                return "redirect:/admin/bank";
+            }
+            if (user.getRole() == Role.SUPER_ADMIN) {
+                return "redirect:/superadmin/users";
+            }
         }
         model.addAttribute("credits", creditService.findAll());
         return "index";

@@ -1,0 +1,13 @@
+.nav-link :hover {
+    color: black;
+    text-decoration: underline;
+}
+
+.nav-link {
+    color: darkgray;
+}
+
+.active {
+    color: black;
+    font-weight: 700;
+}

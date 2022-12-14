@@ -11,8 +11,8 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@ToString(exclude = {"requests"})
-@EqualsAndHashCode(exclude = {"requests"})
+@ToString(exclude = {"requests", "bank"})
+@EqualsAndHashCode(exclude = {"requests", "bank"})
 @Table(name = "Users")
 public class User {
     @Id
@@ -28,9 +28,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-//    @Transient
-//    transient private String confirmPassword;
-
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -41,4 +38,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Request> requests;
+
+    @OneToOne(mappedBy = "admin")
+    private Bank bank;
 }

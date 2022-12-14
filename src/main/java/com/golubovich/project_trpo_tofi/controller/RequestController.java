@@ -1,6 +1,7 @@
 package com.golubovich.project_trpo_tofi.controller;
 
 import com.golubovich.project_trpo_tofi.model.Request;
+import com.golubovich.project_trpo_tofi.model.RequestDetails;
 import com.golubovich.project_trpo_tofi.service.CreditServiceImpl;
 import com.golubovich.project_trpo_tofi.service.RequestServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,8 @@ public class RequestController  {
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('user:write')")
-    public String createOnlineRequest(Request request) {
+    public String createOnlineRequest(Request request, RequestDetails requestDetails) {
+        request.setDetails(requestDetails);
         requestService.create(request);
         return "redirect:/";
     }
@@ -56,7 +58,8 @@ public class RequestController  {
 
     @PostMapping("/update-{id}")
     @PreAuthorize("hasAuthority('user:write')")
-    public String updateOnlineRequest(Request request) {
+    public String updateOnlineRequest(Request request, RequestDetails requestDetails) {
+        request.setDetails(requestDetails);
         requestService.update(request);
         return "redirect:/cabinet";
     }

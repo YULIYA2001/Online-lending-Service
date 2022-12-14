@@ -1,11 +1,14 @@
 package com.golubovich.project_trpo_tofi.controller;
 
-import com.golubovich.project_trpo_tofi.model.Bank;
-import com.golubovich.project_trpo_tofi.model.Role;
-import com.golubovich.project_trpo_tofi.model.User;
-import com.golubovich.project_trpo_tofi.model.UserDetails;
+import com.golubovich.project_trpo_tofi.model.*;
 import com.golubovich.project_trpo_tofi.repository.*;
+import com.golubovich.project_trpo_tofi.service.BankServiceImpl;
+import com.golubovich.project_trpo_tofi.service.CreditServiceImpl;
+import com.golubovich.project_trpo_tofi.service.RequestServiceImpl;
+import com.golubovich.project_trpo_tofi.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,143 +16,183 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Optional;
-
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
-    private final UserRepository userRepository;
-    private final RequestRepository requestRepository;
-    private final ResponseRepository responseRepository;
-    private final CreditRepository creditRepository;
-    private final BankRepository bankRepository;
-    private final CreditTermRateVariantRepository creditTermRateVariantRepository;
+    private final UserServiceImpl userService;
+    private final RequestServiceImpl requestService;
+    private final CreditServiceImpl creditService;
+    private final BankServiceImpl bankService;
 
-
-
-    public AdminController(UserRepository userRepository, RequestRepository requestRepository,
-                           ResponseRepository responseRepository, CreditRepository creditRepository,
-                           BankRepository bankRepository,CreditTermRateVariantRepository creditTermRateVariantRepository) {
-        this.userRepository = userRepository;
-        this.requestRepository = requestRepository;
-        this.responseRepository = responseRepository;
-        this.creditRepository = creditRepository;
-        this.bankRepository = bankRepository;
-        this.creditTermRateVariantRepository = creditTermRateVariantRepository;
+    @Autowired
+    public AdminController(UserServiceImpl userService, RequestServiceImpl requestService,
+                           CreditServiceImpl creditService, BankServiceImpl bankService) {
+        this.userService = userService;
+        this.requestService = requestService;
+        this.creditService = creditService;
+        this.bankService = bankService;
     }
 
-    @GetMapping("/users")
-    @PreAuthorize("hasAuthority('admin:read')")
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", userRepository.findAllWithDetails());
-        return "admin/users";
-    }
 
+    // for super admin
+//    @GetMapping("/users")
+//    @PreAuthorize("hasAuthority('admin:read')")
+//    public String getAllUsersRoleUser(Model model) {
+//        model.addAttribute("users", userService.findAllRoleUserWithDetails());
+//        return "admin/users";
+//    }
+
+    /*          users             */
     @GetMapping("/users/{id}")
-    @PreAuthorize("hasAuthority('admin:write')")
+    @PreAuthorize("hasAuthority('admin:read')")
     public String getUserById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userRepository.findByIdWithDetails(id));
-        model.addAttribute("model_name", "user");
+        model.addAttribute("user", userService.findByIdWithDetails(id));
+        model.addAttribute("model_name", "user-for-admin");
+        model.addAttribute("title", "Данные пользователя");
+        model.addAttribute("backPageHref", "/admin/requests");
+        model.addAttribute("backPageHrefText", "Вернуться к заявкам");
         return "admin/model-show";
     }
+
+
+
+    /*          requests             */
 
     @GetMapping("/requests")
     @PreAuthorize("hasAuthority('admin:read')")
     public String getAllRequests(Model model) {
-        model.addAttribute("requests", requestRepository.findAll());
+        model.addAttribute("requests", requestService.findAllByBank());
         return "admin/requests";
     }
 
-    @GetMapping("/requests/{id}")
+    @GetMapping("/requests/reject-{id}")
     @PreAuthorize("hasAuthority('admin:write')")
-    public String getRequestById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("request", requestRepository.findById(id).get());
-        model.addAttribute("model_name", "request");
-        return "admin/model-show";
+    public String updateOnlineRequestForm(@PathVariable("id") Long requestId, Model model) {
+        requestService.updateStatusReject(requestId);
+        return "redirect:/admin/requests";
     }
 
-    @GetMapping("/requests/{id}/response")
+    @GetMapping("/requests/delete-{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String deleteOnlineRequest(@PathVariable("id") Long requestId) {
+        requestService.deleteById(requestId);
+        return "redirect:/admin/requests";
+    }
+
+
+    /*       bank      */
+    @GetMapping("/bank")
     @PreAuthorize("hasAuthority('admin:read')")
-    public String getResponseToRequestById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("response", responseRepository.findById(id).get());
-        model.addAttribute("model_name", "response");
-        return "admin/model-show";
+    public String getBank(Model model) {
+        String adminEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("bank", bankService.findByAdminEmail(adminEmail));
+        return "admin/bank";
     }
 
+    @PostMapping("/bank/create")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String createBank(Bank bank) {
+        bankService.createBank(bank);
+        return "redirect:/admin/bank";
+    }
+
+    @PostMapping("/bank/edit-{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String editBank(Bank bank, Model model) {
+        if (!bankService.update(bank)) {
+            model.addAttribute("bank", bankService.findById(bank.getId()));
+            model.addAttribute("msgExistingBankName",
+                    "Данные не сохранены. Название банка должно быть уникальным");
+            return "/admin/bank";
+        }
+        return "redirect:/admin/bank";
+    }
+
+    @PostMapping("/bank/{id}/add-contacts")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String addBankContacts(@PathVariable("id") Long bankId, String address, String phone1,
+                                  String phone2, String phone3) {
+        bankService.addContacts(bankId, address, new String[] {phone1,phone2,phone3});
+        return "redirect:/admin/bank";
+    }
+
+    @GetMapping("/bank/delete-contacts-{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String deleteBankContacts(@PathVariable("id") Long bankAddressId) {
+        bankService.deleteContacts(bankAddressId);
+        return "redirect:/admin/bank";
+    }
+
+
+    /*       credits      */
     @GetMapping("/credits")
     @PreAuthorize("hasAuthority('admin:read')")
     public String getAllCredits(Model model) {
-        model.addAttribute("credits", creditRepository.findAll());
+        model.addAttribute("credits", creditService.findAllForAdmin());
         return "admin/credits";
     }
 
     @GetMapping("/credits/{id}")
-    @PreAuthorize("hasAuthority('admin:write')")
+    @PreAuthorize("hasAuthority('admin:read')")
     public String getCreditById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("credit", creditRepository.findById(id).get());
-        model.addAttribute("model_name", "credit");
+        model.addAttribute("credit", creditService.findById(id));
+        model.addAttribute("model_name", "credit-for-admin");
+        model.addAttribute("title", "Данные по кредиту");
+        model.addAttribute("backPageHref", "/admin/requests");
+        model.addAttribute("backPageHrefText", "Вернуться к заявкам");
         return "admin/model-show";
     }
 
-    @GetMapping("/banks")
-    @PreAuthorize("hasAuthority('admin:read')")
-    public String getAllBanks(Model model) {
-        model.addAttribute("banks", bankRepository.findAll());
-        return "admin/banks";
-    }
-
-    @GetMapping("/banks/{id}")
+    @GetMapping("/credits/create")
     @PreAuthorize("hasAuthority('admin:write')")
-    public String getBankById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("bank", bankRepository.findById(id).get());
-        model.addAttribute("model_name", "bank");
-        return "admin/model-show";
+    public String createCreditPage(Model model) {
+        return "/admin/credit-create";
     }
 
-    @GetMapping("/credits/{id}/variants")
-    @PreAuthorize("hasAuthority('admin:read')")
-    public String getAllCreditTermRateVariantByCreditId(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("creditVariants", creditRepository.findById(id).get().getCreditTermRateVariants());
-        return "admin/credit-variants";
-    }
-
-    @GetMapping("/credits/{id2}/variants/{id}")
+    @PostMapping("/credits/create")
     @PreAuthorize("hasAuthority('admin:write')")
-    public String getCreditTermRateVariantById(@PathVariable("id") Long id, Model model, @PathVariable String id2) {
-        model.addAttribute("creditVariant", creditTermRateVariantRepository.findById(id).get());
-        model.addAttribute("model_name", "creditVariant");
-        return "admin/model-show";
+    public String createCredit(Credit credit, CreditTermRateVariant creditVariant, String termRadio) {
+        creditVariant.setTerm(creditVariant.getTerm()+termRadio);
+        creditService.createCredit(credit, creditVariant);
+        return "redirect:/admin/credits";
     }
 
-    @GetMapping("/banks/{id}/addresses-phones")
-    @PreAuthorize("hasAuthority('admin:read')")
-    public String getAllBankAddressesPhones(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("bankAddresses", bankRepository.findById(id).get().getAddresses());
-        return "admin/bank-addresses-phones";
+    @GetMapping("/credits/edit-{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String editCreditPage(@PathVariable("id") Long creditId, Model model) {
+        model.addAttribute("credit", creditService.findById(creditId));
+        return "/admin/credit-edit";
     }
 
+    @PostMapping("/credits/edit-{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String editCredit(Credit credit) {
+        creditService.updateCredit(credit);
+        return "redirect:/admin/credits/edit-{id}";
+    }
 
-//    @PostMapping("/admin/banks/add")
-//    public String addBank(Bank bank, Model model) {
-//        Optional<User> optionalUserFromDb = userRepository.findByEmailOrPhone(user.getEmail(), user.getPhone());
-//        User userFromDb = optionalUserFromDb.orElse(null);
-//
-//        if (userFromDb != null) {
-//            if (userFromDb.getEmail().equals(user.getEmail())) {
-//                model.addAttribute("msgExistingEmail", "Пользователь с таким email уже существует!");
-//                return "redirect:/auth/signup";
-//            }
-//            else if (userFromDb.getEmail().equals(user.getPhone())) {
-//                model.addAttribute("msgExistingPhone", "Пользователь с таким телефоном уже существует!");
-//                return "redirect:/auth/signup";
-//            }
-//        }
-//
-//        user.setUserDetails(userDetails);
-//        user.setRole(Role.USER);
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        userRepository.save(user);
-//
-//        return "redirect:/auth/login";
-//    }
+    @PostMapping("/credits/edit-{id}/add-variants")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String addCreditTermRateVariant(@PathVariable("id") Long creditId,
+                                           CreditTermRateVariant creditVariant, String termRadio) {
+        creditVariant.setTerm(creditVariant.getTerm()+termRadio);
+        creditService.addCreditVariant(creditId, creditVariant);
+        return "redirect:/admin/credits/edit-{id}";
+    }
+
+    @GetMapping("/credits/edit-{id1}/delete-variant-{id2}")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String deleteCreditTermRateVariant(@PathVariable("id2") Long creditVariantId,
+                                              @PathVariable("id1") Long creditId) {
+        creditService.deleteCreditVariant(creditVariantId);
+        return "redirect:/admin/credits/edit-{id1}";
+    }
+
+    @GetMapping("/credits/delete-{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String deleteCredit(@PathVariable("id") Long creditId) {
+        creditService.deleteCredit(creditId);
+        return "redirect:/admin/credits";
+    }
+
 }

@@ -1,4 +1,4 @@
-<div th:fragment="user-row">
+<th:block th:fragment="user-row">
     <td th:text="${user.getId()}"></td>
     <td th:text="${user.getUserDetails().getSurname()}"></td>
     <td th:text="${user.getUserDetails().getName()}"></td>
@@ -9,14 +9,26 @@
     <td th:text="${user.getEmail()}"></td>
     <td th:text="${user.getUserDetails().getRegDate()}"></td>
     <td th:text="${user.getRole.name()}"></td>
-</div>
+</th:block>
+
+<th:block th:fragment="user-for-admin-row">
+    <td th:text="${user.getUserDetails().getSurname()}"></td>
+    <td th:text="${user.getUserDetails().getName()}"></td>
+    <td th:text="${user.getUserDetails().getPatronymic()}"></td>
+    <td th:text="${user.getPhone()}"></td>
+    <td th:text="${user.getUserDetails().getAge()}"></td>
+    <td th:text="${user.getEmail()}"></td>
+    <td th:text="${user.getUserDetails().getRegDate()}"></td>
+</th:block>
 
 
-<div th:fragment="request-row">
+
+
+<th:block th:with="credit=${request.getCreditTermRateVariant().getCredit()}" th:fragment="request-row">
     <td th:text="${request.getId()}"></td>
     <td>
-        <a th:href="@{/admin/credits/{id}(id=${request.getCredit().getId()})}">
-            <div th:text="${request.getCredit().getId()}"></div>
+        <a th:href="@{/admin/credits/{id}(id=${credit.getId()})}">
+            <div th:text="${credit.getId()}"></div>
         </a>
     </td>
     <td>
@@ -27,10 +39,10 @@
     <td th:text="${request.getSum()}"></td>
     <td th:text="${request.getCreditTermRateVariant().getTerm()}"></td>
     <td th:text="${request.getCreditTermRateVariant().getRate() + '%'}"></td>
-    <td th:text="${request.getIncome()}"></td>
-    <td th:text="${request.getCreditsCount()}"></td>
-    <td th:text="${request.getCreditsPayments()}"></td>
-    <td th:text="${request.getRequestStatus().name()}"></td>
+    <td th:text="${request.getDetails().getIncome()}"></td>
+    <td th:text="${request.getDetails().getCreditsCount()}"></td>
+    <td th:text="${request.getDetails().getCreditsPayments()}"></td>
+    <td th:text="${request.getRequestStatus().getTitle()}"></td>
     <td>
         <div th:if="${request.getResponse()}">
             <a th:href="@{/admin/requests/{id}/response(id=${request.getId()})}">
@@ -38,17 +50,21 @@
             </a>
         </div>
     </td>
-</div>
+</th:block>
 
 
-<div th:fragment="response-row">
+
+
+<th:block th:fragment="response-row">
     <td th:text="${response.getId()}"></td>
     <td th:text="${response.getSum()}"></td>
     <td th:text="${response.getDatetime()}"></td>
-</div>
+</th:block>
 
 
-<div th:fragment="credit-row">
+
+
+<th:block th:fragment="credit-row">
     <td th:text="${credit.getId()}"></td>
     <td>
         <a th:href="@{/admin/banks/{id}(id=${credit.getBank().getId()})}">
@@ -62,10 +78,23 @@
             <div>Варианты</div>
         </a>
     </td>
-</div>
+</th:block>
+
+<th:block th:fragment="credit-for-admin-row">
+    <td th:text="${credit.getId()}"></td>
+    <td th:text="${credit.getCreditType()}"></td>
+    <td th:text="${credit.getMaxSum()}"></td>
+    <td>
+        <th:block th:each="variant : ${credit.getCreditTermRateVariants()}">
+            <div style="white-space:pre" th:text="${variant.getRate() + ' %    -    ' + variant.getTerm()}"></div>
+        </th:block>
+    </td>
+</th:block>
 
 
-<div th:fragment="bank-row">
+
+
+<th:block th:fragment="bank-row">
     <td th:text="${bank.getId()}"></td>
     <td th:text="${bank.getName()}"></td>
     <td th:text="${bank.getTrustZone()}"></td>
@@ -74,17 +103,21 @@
             <div>Подробнее адреса</div>
         </a>
     </td>
-</div>
+</th:block>
 
 
-<div th:fragment="creditVariant-row">
+
+
+<th:block th:fragment="creditVariant-row">
     <td th:text="${creditVariant.getId()}"></td>
     <td th:text="${creditVariant.getTerm()}"></td>
     <td th:text="${creditVariant.getRate()}"></td>
-</div>
+</th:block>
 
 
-<div th:fragment="bankAddresses-row">
+
+
+<th:block th:fragment="bankAddresses-row">
     <td th:text="${bankAddress.getBank().getName()}"></td>
     <td th:text="${bankAddress.getAddress()}"></td>
     <td>
@@ -92,4 +125,4 @@
             <div th:text="${phone.getPhone()}"></div>
         </div>
     </td>
-</div>
+</th:block>
