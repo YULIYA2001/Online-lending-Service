@@ -34,15 +34,8 @@ public class AdminController {
     }
 
 
-    // for super admin
-//    @GetMapping("/users")
-//    @PreAuthorize("hasAuthority('admin:read')")
-//    public String getAllUsersRoleUser(Model model) {
-//        model.addAttribute("users", userService.findAllRoleUserWithDetails());
-//        return "admin/users";
-//    }
-
     /*          users             */
+
     @GetMapping("/users/{id}")
     @PreAuthorize("hasAuthority('admin:read')")
     public String getUserById(@PathVariable("id") Long id, Model model) {
@@ -57,7 +50,6 @@ public class AdminController {
 
 
     /*          requests             */
-
     @GetMapping("/requests")
     @PreAuthorize("hasAuthority('admin:read')")
     public String getAllRequests(Model model) {
@@ -67,7 +59,7 @@ public class AdminController {
 
     @GetMapping("/requests/reject-{id}")
     @PreAuthorize("hasAuthority('admin:write')")
-    public String updateOnlineRequestForm(@PathVariable("id") Long requestId, Model model) {
+    public String updateOnlineRequest(@PathVariable("id") Long requestId) {
         requestService.updateStatusReject(requestId);
         return "redirect:/admin/requests";
     }
@@ -78,6 +70,7 @@ public class AdminController {
         requestService.deleteById(requestId);
         return "redirect:/admin/requests";
     }
+
 
 
     /*       bank      */
@@ -122,6 +115,7 @@ public class AdminController {
         bankService.deleteContacts(bankAddressId);
         return "redirect:/admin/bank";
     }
+
 
 
     /*       credits      */

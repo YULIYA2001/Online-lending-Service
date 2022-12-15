@@ -37,7 +37,7 @@ public class HomeController {
                 return "redirect:/admin/bank";
             }
             if (user.getRole() == Role.SUPER_ADMIN) {
-                return "redirect:/superadmin/users";
+                return "redirect:/super-admin/users";
             }
         }
         model.addAttribute("credits", creditService.findAll());

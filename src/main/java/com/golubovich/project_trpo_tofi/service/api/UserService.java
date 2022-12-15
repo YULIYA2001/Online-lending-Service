@@ -22,7 +22,11 @@ public interface UserService {
 
     String updateUser(User user, String passwordOld);
 
-    List<User> findAllRoleUserWithDetails();
+    List<User> findAllWithDetails();
 
     User findByIdWithDetails(Long id);
+
+    void deleteById(Long userId);
+
+    void updateUserMakeAdmin(Long userId);
 }

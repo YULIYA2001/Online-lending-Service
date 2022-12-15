@@ -82,6 +82,10 @@ public class RequestServiceImpl implements RequestService {
         if (admin != null) {
             Bank bank = admin.getBank();
 
+            if (bank == null) {
+                return null;
+            }
+
             List <Request> bankRequests = requestRepository.findByBankId(bank.getId());
             return bankRequests;
         }

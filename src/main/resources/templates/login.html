@@ -67,21 +67,34 @@
             </div>
         </div>
     </section>
+
+        <script>
+            const togglePassword = document.getElementById('togglePassword');
+            function processClick(eye, password) {
+                const type = password
+                    .getAttribute('type') === 'password' ?
+                    'text' : 'password';
+
+                password.setAttribute('type', type);
+                eye.classList.toggle('bi-eye');
+            }
+            togglePassword.addEventListener('click', () => processClick(togglePassword, password));
+        </script>
 </div>
 
 <script>
-    const togglePassword = document.getElementById('togglePassword');
-
-    function processClick(eye, password) {
-        const type = password
-            .getAttribute('type') === 'password' ?
-            'text' : 'password';
-
-        password.setAttribute('type', type);
-        eye.classList.toggle('bi-eye');
-    }
-
-    togglePassword.addEventListener('click', () => processClick(togglePassword, password));
+    // const togglePassword = document.getElementById('togglePassword');
+    //
+    // function processClick(eye, password) {
+    //     const type = password
+    //         .getAttribute('type') === 'password' ?
+    //         'text' : 'password';
+    //
+    //     password.setAttribute('type', type);
+    //     eye.classList.toggle('bi-eye');
+    // }
+    //
+    // togglePassword.addEventListener('click', () => processClick(togglePassword, password));
 
     setTimeout(() => {
         const box = document.getElementById('box');

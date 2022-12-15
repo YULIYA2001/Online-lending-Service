@@ -10,14 +10,16 @@
 </head>
 <body>
 
-    <div th:replace="blocks/admin/admin-header :: header"></div>
+    <div th:replace="blocks/admin/super-admin-header :: header"></div>
 
     <div class="container d-flex flex-column align-self-center">
         <div class="d-flex justify-content-between mx-3 mb-3">
             <h4 class="mt-0">Пользователи</h4>
         </div>
 
-        <table class="table align-middle text-center">
+        <div th:if="${users.size()==0}">Список пользователей пуст</div>
+
+        <table th:unless="${users.size()==0}" class="table align-middle text-center">
             <thead style="background-color: darkgray" class="align-middle">
                 <tr>
                     <th scope="col">№</th>
@@ -34,12 +36,12 @@
                     <th:block th:replace="blocks/admin/model-table-rows :: user-row"></th:block>
 
                     <td>
-                        <div class="d-flex justify-content-around">
-                            <a th:href="@{/admin/users/edit-{id}(id=${user.getId()})}"
-                               class="btn btn-outline-primary">
-                                <i class="far fa-edit"></i>
+                        <div class="d-flex justify-content-end">
+                            <a th:if="${user.getRole().name()=='USER'}" th:href="@{/super-admin/users/make-admin-{id}(id=${user.getId()})}"
+                               class="btn btn-outline-primary me-1">
+                                <i class="far fa-times-circle" title="Назначить администратором"></i>
                             </a>
-                            <a th:href="@{/admin/users/delete-{id}(id=${user.getId()})}"
+                            <a th:href="@{/super-admin/users/delete-{id}(id=${user.getId()})}"
                                class="btn btn-outline-danger">
                                 <i class="far fa-trash-alt"></i>
                             </a>

@@ -9,10 +9,12 @@ import com.golubovich.project_trpo_tofi.repository.BankAddressRepository;
 import com.golubovich.project_trpo_tofi.repository.BankRepository;
 import com.golubovich.project_trpo_tofi.service.api.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BankServiceImpl implements BankService {
@@ -22,7 +24,8 @@ public class BankServiceImpl implements BankService {
     private final UserServiceImpl userService;
 
     @Autowired
-    public BankServiceImpl(BankRepository bankRepository, BankAddressRepository addressRepository, AddressPhonesRepository phonesRepository, UserServiceImpl userService) {
+    public BankServiceImpl(BankRepository bankRepository, BankAddressRepository addressRepository,
+                           AddressPhonesRepository phonesRepository, @Lazy UserServiceImpl userService) {
         this.bankRepository = bankRepository;
         this.addressRepository = addressRepository;
         this.phonesRepository = phonesRepository;
@@ -83,4 +86,9 @@ public class BankServiceImpl implements BankService {
         return true;
     }
 
+    public void deleteBankByAdminId(Long adminId) {
+        User admin = userService.findByIdWithDetails(adminId);
+        Bank bank = this.findByAdminEmail(admin.getEmail());
+        bankRepository.deleteById(bank.getId());
+    }
 }

@@ -12,7 +12,9 @@
 
     <div th:replace="blocks/admin/admin-header :: header"></div>
 
-    <div class="container d-flex flex-column align-self-center">
+    <div class="text-center" th:if="${requests == null}">Банк не создан</div>
+
+    <div th:unless="${requests == null}" class="container d-flex flex-column align-self-center">
         <div class="d-flex justify-content-between mx-3 mb-3">
             <h4 class="mt-0">Онлайн-заявки</h4>
         </div>

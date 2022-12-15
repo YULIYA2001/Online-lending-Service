@@ -12,7 +12,9 @@
 
     <div th:replace="blocks/admin/admin-header :: header"></div>
 
-    <div class="container d-flex flex-column align-self-center">
+    <div class="text-center" th:if="${credits == null}">Создайте банк для добавления кредитов</div>
+
+    <div th:unless="${credits == null}" class="container d-flex flex-column align-self-center">
         <div class="d-flex justify-content-between mx-3 mb-3">
             <h4 class="mt-0">Кредиты</h4>
             <a href="/admin/credits/create">

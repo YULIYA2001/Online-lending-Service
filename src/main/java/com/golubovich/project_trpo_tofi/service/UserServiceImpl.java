@@ -1,5 +1,6 @@
 package com.golubovich.project_trpo_tofi.service;
 
+import com.golubovich.project_trpo_tofi.model.Bank;
 import com.golubovich.project_trpo_tofi.model.Role;
 import com.golubovich.project_trpo_tofi.model.User;
 import com.golubovich.project_trpo_tofi.repository.UserRepository;
@@ -20,13 +21,16 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserDetailsServiceImpl detailsService;
+    private final UserDetailsServiceImpl detailsService;
+    private final BankServiceImpl bankService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                           UserDetailsServiceImpl detailsService, BankServiceImpl bankService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.detailsService = detailsService;
+        this.bankService = bankService;
     }
 
     public User findByEmailOrPhone(String email, String phone) {
@@ -97,11 +101,28 @@ public class UserServiceImpl implements UserService {
         return "";
     }
 
-    public List<User> findAllRoleUserWithDetails() {
-        return userRepository.findAllWithDetails("USER");
+    public List<User> findAllWithDetails() {
+        return userRepository.findAllWithDetails("USER", "ADMIN");
     }
 
     public User findByIdWithDetails(Long id) {
         return userRepository.findByIdWithDetails(id);
+    }
+
+    public void deleteById(Long userId) {
+        User user = this.findByIdWithDetails(userId);
+        if (user.getRole() == Role.USER) {
+            userRepository.deleteById(userId);
+        }
+        else {
+            bankService.deleteBankByAdminId(userId);
+        }
+
+    }
+
+    public void updateUserMakeAdmin(Long userId) {
+        User user = this.findByIdWithDetails(userId);
+        user.setRole(Role.ADMIN);
+        userRepository.save(user);
     }
 }

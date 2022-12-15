@@ -39,6 +39,9 @@ public class CreditServiceImpl implements CreditService {
     public List<Credit> findAllForAdmin() {
         String adminEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Bank bank = bankService.findByAdminEmail(adminEmail);
+        if (bank == null) {
+            return null;
+        }
         return creditRepository.findAllByBankId(bank.getId());
     }
 
