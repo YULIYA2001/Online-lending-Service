@@ -10,8 +10,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"requests"})
-@EqualsAndHashCode(exclude = {"requests"})
+@ToString(exclude = {"requests","responses"})
+@EqualsAndHashCode(exclude = {"requests","responses"})
 @Table(name = "CreditTermRateVariants")
 public class CreditTermRateVariant {
     @Id
@@ -31,4 +31,7 @@ public class CreditTermRateVariant {
 
     @OneToMany(mappedBy = "creditTermRateVariant", cascade = CascadeType.ALL)
     private Set<Request> requests;
+
+    @OneToMany(mappedBy = "alternativeCreditVariant", cascade = CascadeType.ALL)
+    private Set<Response> responses;
 }

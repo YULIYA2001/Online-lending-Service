@@ -1,11 +1,7 @@
 package com.golubovich.project_trpo_tofi.controller;
 
 import com.golubovich.project_trpo_tofi.model.*;
-import com.golubovich.project_trpo_tofi.repository.*;
-import com.golubovich.project_trpo_tofi.service.BankServiceImpl;
-import com.golubovich.project_trpo_tofi.service.CreditServiceImpl;
-import com.golubovich.project_trpo_tofi.service.RequestServiceImpl;
-import com.golubovich.project_trpo_tofi.service.UserServiceImpl;
+import com.golubovich.project_trpo_tofi.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,13 +20,16 @@ public class AdminController {
     private final CreditServiceImpl creditService;
     private final BankServiceImpl bankService;
 
+    private final ResponseServiceImpl responseService;
+
     @Autowired
     public AdminController(UserServiceImpl userService, RequestServiceImpl requestService,
-                           CreditServiceImpl creditService, BankServiceImpl bankService) {
+                           CreditServiceImpl creditService, BankServiceImpl bankService, ResponseServiceImpl responseService) {
         this.userService = userService;
         this.requestService = requestService;
         this.creditService = creditService;
         this.bankService = bankService;
+        this.responseService = responseService;
     }
 
 
@@ -46,7 +45,6 @@ public class AdminController {
         model.addAttribute("backPageHrefText", "Вернуться к заявкам");
         return "admin/model-show";
     }
-
 
 
     /*          requests             */
@@ -71,6 +69,31 @@ public class AdminController {
         return "redirect:/admin/requests";
     }
 
+
+    /*          responses             */
+    @GetMapping("/requests-{id}/add-response")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String addOnlineResponse(@PathVariable("id") Long requestId) {
+        responseService.createResponseToRequestById(requestId);
+        return "redirect:/admin/requests";
+    }
+
+    @GetMapping("/requests-{id}/response")
+    @PreAuthorize("hasAuthority('admin:write')")
+    public String getOnlineResponse(@PathVariable("id") Long requestId, Model model) {
+        Response response = responseService.findByRequestId(requestId);
+
+        if (response != null) {
+            model.addAttribute("response", response);
+            model.addAttribute("model_name", "response");
+            model.addAttribute("title", "Ответ на онлайн-заявку №" + requestId.toString());
+            model.addAttribute("backPageHref", "/admin/requests");
+            model.addAttribute("backPageHrefText", "Вернуться к заявкам");
+            return "admin/model-show";
+        }
+
+        return "redirect:/admin/requests";
+    }
 
 
     /*       bank      */
@@ -105,7 +128,7 @@ public class AdminController {
     @PreAuthorize("hasAuthority('admin:write')")
     public String addBankContacts(@PathVariable("id") Long bankId, String address, String phone1,
                                   String phone2, String phone3) {
-        bankService.addContacts(bankId, address, new String[] {phone1,phone2,phone3});
+        bankService.addContacts(bankId, address, new String[]{phone1, phone2, phone3});
         return "redirect:/admin/bank";
     }
 
@@ -115,7 +138,6 @@ public class AdminController {
         bankService.deleteContacts(bankAddressId);
         return "redirect:/admin/bank";
     }
-
 
 
     /*       credits      */
@@ -146,7 +168,7 @@ public class AdminController {
     @PostMapping("/credits/create")
     @PreAuthorize("hasAuthority('admin:write')")
     public String createCredit(Credit credit, CreditTermRateVariant creditVariant, String termRadio) {
-        creditVariant.setTerm(creditVariant.getTerm()+termRadio);
+        creditVariant.setTerm(creditVariant.getTerm() + termRadio);
         creditService.createCredit(credit, creditVariant);
         return "redirect:/admin/credits";
     }
@@ -169,7 +191,7 @@ public class AdminController {
     @PreAuthorize("hasAuthority('admin:write')")
     public String addCreditTermRateVariant(@PathVariable("id") Long creditId,
                                            CreditTermRateVariant creditVariant, String termRadio) {
-        creditVariant.setTerm(creditVariant.getTerm()+termRadio);
+        creditVariant.setTerm(creditVariant.getTerm() + termRadio);
         creditService.addCreditVariant(creditId, creditVariant);
         return "redirect:/admin/credits/edit-{id}";
     }

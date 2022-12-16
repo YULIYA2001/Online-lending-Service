@@ -61,6 +61,12 @@ public class RequestServiceImpl implements RequestService {
         requestRepository.save(request);
     }
 
+    public void updateStatusCompleted(Long requestId) {
+        Request request = this.findById(requestId);
+        request.setRequestStatus(RequestStatus.COMPLETED);
+        requestRepository.save(request);
+    }
+
     public void deleteById(Long id) {
         Request request = requestRepository.findById(id).orElse(null);
         if (request != null) {

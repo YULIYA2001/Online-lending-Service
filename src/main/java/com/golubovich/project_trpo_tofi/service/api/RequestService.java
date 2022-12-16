@@ -14,7 +14,7 @@ public interface RequestService {
 
     void update(Request request);
     void updateStatusReject(Long requestId);
-
+    void updateStatusCompleted(Long requestId);
     void deleteById(Long id);
 
     List<Request> findAllByBank();

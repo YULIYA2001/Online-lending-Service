@@ -1,5 +1,6 @@
 package com.golubovich.project_trpo_tofi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +32,25 @@ public class Response {
     @MapsId
     @JoinColumn(name = "request_id")
     private Request request;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "CreditTermRateVariant_ID")
+    private CreditTermRateVariant alternativeCreditVariant;
+
+    public Response(BigDecimal sum, BigDecimal payment, Date datetime, Request request) {
+        this.sum = sum;
+        this.payment = payment;
+        this.datetime = datetime;
+        this.request = request;
+    }
+
+    public Response(BigDecimal sum, BigDecimal payment, Date datetime,
+                    Request request, CreditTermRateVariant alternativeCreditVariant) {
+        this.sum = sum;
+        this.payment = payment;
+        this.datetime = datetime;
+        this.request = request;
+        this.alternativeCreditVariant = alternativeCreditVariant;
+    }
 }

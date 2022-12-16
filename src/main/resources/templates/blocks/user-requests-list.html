@@ -76,15 +76,30 @@
                         <div class="modal-body mx-3 d-flex flex-column align-items-center">
                             <th:block th:if="${request.getResponse().getSum().intValue()!=0}">
                                 <p><b><i>Благодарим Вас за обращение в [[${credit.getBank().getName()}]]</i></b></p>
-                                <p>По кредиту "[[${credit.getCreditType()}]]" одобрено
-                                    <b>[[${request.getResponse().getSum()}]]</b> бел.руб.
-                                    (запрашивалось [[${request.getSum()}]] бел.руб.).
-                                </p >
-                                <ul class="d-flex flex-column align-items-start">
-                                    <li>Ставка - [[${request.getCreditTermRateVariant().getRate()}]]%</li>
-                                    <li>Срок - [[${request.getCreditTermRateVariant().getTerm()}]]</li>
-                                    <li>Ежемесячный платеж - [[${request.getResponse().getPayment()}]] бел.руб.</li>
-                                </ul>
+
+                                <div th:if="${request.getResponse().getAlternativeCreditVariant()==null}">
+                                    <p style="text-align: justify">По кредиту "[[${credit.getCreditType()}]]" одобрено
+                                        <b>[[${request.getResponse().getSum()}]]</b> бел.руб.
+                                    </p>
+                                    <ul class="d-flex flex-column align-items-start">
+                                        <li>Ставка - [[${request.getCreditTermRateVariant().getRate()}]]%</li>
+                                        <li>Срок - [[${request.getCreditTermRateVariant().getTerm()}]]</li>
+                                        <li>Ежемесячный платеж - [[${request.getResponse().getPayment()}]] бел.руб.</li>
+                                    </ul>
+                                </div>
+
+                                <div th:unless="${request.getResponse().getAlternativeCreditVariant()==null}">
+                                    <p style="text-align: justify">К сожалению с выбранными параметрами кредит не одобрен.
+                                        По кредиту "[[${credit.getCreditType()}]]" возможно одобрение
+                                        <b>[[${request.getResponse().getSum()}]]</b> бел.руб.
+                                        cо следующими ставкой и сроком:
+                                    </p>
+                                    <ul  class="d-flex flex-column align-items-start">
+                                        <li>Ставка - [[${request.getResponse().getAlternativeCreditVariant().getRate()}]]%</li>
+                                        <li>Срок - [[${request.getResponse().getAlternativeCreditVariant().getTerm()}]]</li>
+                                        <li>Ежемесячный платеж - [[${request.getResponse().getPayment()}]] бел.руб.</li>
+                                    </ul>
+                                </div>
                                 <p class="mb-0">В ближайшее время с Вами свяжется сотрудник банка</p>
                             </th:block>
                             <th:block th:if="${request.getResponse.getSum().intValue()==0}">
