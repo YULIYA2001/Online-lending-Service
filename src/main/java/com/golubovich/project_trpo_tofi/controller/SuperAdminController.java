@@ -15,6 +15,7 @@ public class SuperAdminController {
 
     private final UserServiceImpl userService;
 
+    @Autowired
     public SuperAdminController(UserServiceImpl userService) {
         this.userService = userService;
     }

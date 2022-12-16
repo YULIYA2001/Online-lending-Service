@@ -12,16 +12,16 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Responses")
+@Table(name = "RESPONSES")
 public class Response {
     @Id
     @Column(name = "request_id")
     private Long id;
 
-    @Column(precision=18, scale=2, nullable = false)
+    @Column(precision = 18, scale = 2, nullable = false)
     private BigDecimal sum;
 
-    @Column(precision=18, scale=2, nullable = false)
+    @Column(precision = 18, scale = 2, nullable = false)
     private BigDecimal payment;
 
     @Column(nullable = false)

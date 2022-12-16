@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString(exclude = {"user"})
 @EqualsAndHashCode(exclude = {"user"})
-@Table(name = "UserDetails")
+@Table(name = "USER_DETAILS")
 public class UserDetails {
 
     @Id

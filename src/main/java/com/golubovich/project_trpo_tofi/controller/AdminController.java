@@ -19,7 +19,6 @@ public class AdminController {
     private final RequestServiceImpl requestService;
     private final CreditServiceImpl creditService;
     private final BankServiceImpl bankService;
-
     private final ResponseServiceImpl responseService;
 
     @Autowired
@@ -161,7 +160,7 @@ public class AdminController {
 
     @GetMapping("/credits/create")
     @PreAuthorize("hasAuthority('admin:write')")
-    public String createCreditPage(Model model) {
+    public String createCreditPage() {
         return "/admin/credit-create";
     }
 

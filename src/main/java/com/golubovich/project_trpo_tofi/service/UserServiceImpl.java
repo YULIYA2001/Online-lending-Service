@@ -1,6 +1,5 @@
 package com.golubovich.project_trpo_tofi.service;
 
-import com.golubovich.project_trpo_tofi.model.Bank;
 import com.golubovich.project_trpo_tofi.model.Role;
 import com.golubovich.project_trpo_tofi.model.User;
 import com.golubovich.project_trpo_tofi.repository.UserRepository;
@@ -113,8 +112,7 @@ public class UserServiceImpl implements UserService {
         User user = this.findByIdWithDetails(userId);
         if (user.getRole() == Role.USER) {
             userRepository.deleteById(userId);
-        }
-        else {
+        } else {
             bankService.deleteBankByAdminId(userId);
         }
 

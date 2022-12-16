@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString(exclude = {"creditTermRateVariants"})
 @EqualsAndHashCode(exclude = {"creditTermRateVariants"})
-@Table(name = "Credits")
+@Table(name = "CREDITS")
 public class Credit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Credit {
     @Column(nullable = false, length = 200)
     private String creditType;
 
-    @Column(precision=18, scale=2, nullable = false)
+    @Column(precision = 18, scale = 2, nullable = false)
     private BigDecimal maxSum;
 
     @ManyToOne

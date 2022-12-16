@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/cabinet")
-public class PersonalCabinetController  {
+public class PersonalCabinetController {
     private final UserServiceImpl userService;
 
     @Autowired

@@ -3,7 +3,6 @@ package com.golubovich.project_trpo_tofi.service;
 import com.golubovich.project_trpo_tofi.model.Bank;
 import com.golubovich.project_trpo_tofi.model.Credit;
 import com.golubovich.project_trpo_tofi.model.CreditTermRateVariant;
-import com.golubovich.project_trpo_tofi.model.Permission;
 import com.golubovich.project_trpo_tofi.repository.CreditRepository;
 import com.golubovich.project_trpo_tofi.repository.CreditTermRateVariantRepository;
 import com.golubovich.project_trpo_tofi.service.api.CreditService;
@@ -11,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class CreditServiceImpl implements CreditService {

@@ -8,13 +8,14 @@ public interface RequestService {
 
     Request findById(Long id);
 
-    List<Request> findAll();
-
     void create(Request request);
 
     void update(Request request);
+
     void updateStatusReject(Long requestId);
+
     void updateStatusCompleted(Long requestId);
+
     void deleteById(Long id);
 
     List<Request> findAllByBank();

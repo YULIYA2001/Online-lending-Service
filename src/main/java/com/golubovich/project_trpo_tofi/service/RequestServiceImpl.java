@@ -17,9 +17,6 @@ public class RequestServiceImpl implements RequestService {
     private final UserServiceImpl userService;
 
     @Autowired
-    private BankServiceImpl bankService;
-
-    @Autowired
     public RequestServiceImpl(RequestRepository requestRepository, UserServiceImpl userService) {
         this.requestRepository = requestRepository;
         this.userService = userService;
@@ -27,10 +24,6 @@ public class RequestServiceImpl implements RequestService {
 
     public Request findById(Long id) {
         return requestRepository.findById(id).orElse(null);
-    }
-
-    public List<Request> findAll() {
-        return (List<Request>) requestRepository.findAll();
     }
 
     public void create(Request request) {
@@ -75,8 +68,7 @@ public class RequestServiceImpl implements RequestService {
             if (userService.findByEmail(authentication.getName()).getRole() == Role.USER) {
                 request.setRequestStatus(RequestStatus.DELETED);
                 requestRepository.save(request);
-            }
-            else {
+            } else {
                 requestRepository.deleteById(id);
             }
         }
@@ -92,8 +84,7 @@ public class RequestServiceImpl implements RequestService {
                 return null;
             }
 
-            List <Request> bankRequests = requestRepository.findByBankId(bank.getId());
-            return bankRequests;
+            return requestRepository.findByBankId(bank.getId());
         }
         return null;
     }

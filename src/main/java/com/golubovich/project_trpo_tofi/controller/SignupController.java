@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/auth")
 public class SignupController {
     private final UserServiceImpl userService;
+
     @Autowired
     public SignupController(UserServiceImpl userService) {
         this.userService = userService;

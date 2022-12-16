@@ -10,9 +10,9 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"requests","responses"})
-@EqualsAndHashCode(exclude = {"requests","responses"})
-@Table(name = "CreditTermRateVariants")
+@ToString(exclude = {"requests", "responses"})
+@EqualsAndHashCode(exclude = {"requests", "responses"})
+@Table(name = "CREDIT_TERM_RATE_VARIANTS")
 public class CreditTermRateVariant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -16,20 +16,20 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString(exclude = {"response"})
 @EqualsAndHashCode(exclude = {"response"})
-@Table(name = "Requests")
+@Table(name = "REQUESTS")
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(precision=18, scale=2, nullable = false)
+    @Column(precision = 18, scale = 2, nullable = false)
     private BigDecimal sum;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date start = new Date();
 
-    @Column(name="status", nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 

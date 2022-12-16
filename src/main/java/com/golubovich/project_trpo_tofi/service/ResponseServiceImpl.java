@@ -63,7 +63,7 @@ public class ResponseServiceImpl implements ResponseService {
                 .divide(BigDecimal.valueOf(4), RoundingMode.HALF_EVEN);
 
         // bank return negative answer if user has low score or choose low sum (<25% from maxCreditSum)
-        if ( (userScore < minScore) || (request.getSum().compareTo(creditMaxSum25) < 0) ) {
+        if ((userScore < minScore) || (request.getSum().compareTo(creditMaxSum25) < 0)) {
             return new Response(BigDecimal.valueOf(0), BigDecimal.valueOf(0), new Date(), request);
         }
 
@@ -81,7 +81,7 @@ public class ResponseServiceImpl implements ResponseService {
                 .doubleValue();
 
 
-        // bank try to recomend other credit variant or return negative answer if users' PDN > 40%
+        // bank try to recommend other credit variant or return negative answer if users' PDN > 40%
         if (PDN > 40) {
             List<CreditTermRateVariant> allVariants = new ArrayList<>(
                     request.getCreditTermRateVariant().getCredit().getCreditTermRateVariants()
@@ -103,7 +103,7 @@ public class ResponseServiceImpl implements ResponseService {
                             .doubleValue();
                     if (PDN < 40) {
                         return new Response(request.getSum(),
-                                REP.setScale(2, RoundingMode.HALF_EVEN), new Date(),request, variant);
+                                REP.setScale(2, RoundingMode.HALF_EVEN), new Date(), request, variant);
                     }
                 }
             } else {

@@ -10,6 +10,7 @@ public interface CreditService {
     Credit findById(Long id);
 
     List<Credit> findAll();
+
     List<Credit> findAllForAdmin();
 
     void createCredit(Credit credit, CreditTermRateVariant creditTermRateVariant);

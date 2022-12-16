@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString(exclude = {"requests", "bank"})
 @EqualsAndHashCode(exclude = {"requests", "bank"})
-@Table(name = "Users")
+@Table(name = "USERS")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

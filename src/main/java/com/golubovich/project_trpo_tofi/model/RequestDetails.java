@@ -13,19 +13,19 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @ToString(exclude = {"request"})
 @EqualsAndHashCode(exclude = {"request"})
-@Table(name = "RequestDetails")
+@Table(name = "REQUEST_DETAILS")
 public class RequestDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(precision=18, scale=2, nullable = false)
+    @Column(precision = 18, scale = 2, nullable = false)
     private BigDecimal income;
 
     @Column(nullable = false)
     private int creditsCount;
 
-    @Column(precision=18, scale=2, nullable = false)
+    @Column(precision = 18, scale = 2, nullable = false)
     private BigDecimal creditsPayments;
 
     @OneToOne(mappedBy = "details")

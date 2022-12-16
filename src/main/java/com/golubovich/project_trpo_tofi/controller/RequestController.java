@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/online-request")
-public class RequestController  {
+public class RequestController {
     private final CreditServiceImpl creditService;
     private final RequestServiceImpl requestService;
 

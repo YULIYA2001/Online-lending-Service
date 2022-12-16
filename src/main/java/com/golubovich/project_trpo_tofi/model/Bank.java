@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString(exclude = {"addresses", "credits"})
 @EqualsAndHashCode(exclude = {"addresses", "credits"})
-@Table(name = "Banks")
+@Table(name = "BANKS")
 public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

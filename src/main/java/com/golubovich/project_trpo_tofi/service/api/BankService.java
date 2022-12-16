@@ -18,5 +18,6 @@ public interface BankService {
     void deleteContacts(Long bankAddressId);
 
     boolean update(Bank bank);
+
     void deleteBankByAdminId(Long adminId);
 }
