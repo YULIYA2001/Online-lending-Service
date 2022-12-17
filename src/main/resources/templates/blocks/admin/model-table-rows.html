@@ -6,7 +6,9 @@
     <td th:text="${user.getUserDetails().getAge()}"></td>
     <td th:text="${user.getUserDetails().getPassportID()}"></td>
     <td th:text="${user.getEmail()}"></td>
-    <td th:text="${user.getUserDetails().getRegDate()}"></td>
+    <td th:with="date=${user.getUserDetails().getRegDate().toString()}"
+        th:text="${date.substring(0, date.length()-4)}"></td>
+<!--    <td th:text="${user.getUserDetails().getRegDate()}"></td>-->
     <td th:text="${user.getRole.name()}"></td>
 </th:block>
 
@@ -17,7 +19,9 @@
     <td th:text="${user.getPhone()}"></td>
     <td th:text="${user.getUserDetails().getAge()}"></td>
     <td th:text="${user.getEmail()}"></td>
-    <td th:text="${user.getUserDetails().getRegDate()}"></td>
+<!--    <td th:text="${user.getUserDetails().getRegDate()}"></td>-->
+    <td th:with="date=${user.getUserDetails().getRegDate().toString()}"
+        th:text="${date.substring(0, date.length()-4)}"></td>
 </th:block>
 
 
@@ -47,7 +51,7 @@
                 <div th:text="${request.getResponse().getId()}"></div>
             </a>
         </div>
-        <div th:unless="${request.getResponse()}" th:if="${request.getRequestStatus().name()!='REJECTED'}">
+        <div th:unless="${request.getResponse()}" th:if="${request.getRequestStatus().name()=='NEW'}">
             <a th:href="@{/admin/requests-{id}/add-response(id=${request.getId()})}">
                 <div>Ответить</div>
             </a>
@@ -60,7 +64,9 @@
 <th:block th:fragment="response-row">
     <td th:text="${response.getSum()}"></td>
     <td th:text="${response.getPayment()}"></td>
-    <td th:text="${response.getDatetime()}"></td>
+<!--    <td th:text="${response.getDatetime()}"></td>-->
+    <td th:with="date=${response.getDatetime().toString()}"
+        th:text="${date.substring(0, date.length()-4)}"></td>
     <th:block th:if="${response.getAlternativeCreditVariant()!=null}">
         <td th:text="${response.getAlternativeCreditVariant().getRate() + '%  -  '
         + response.getAlternativeCreditVariant().getTerm()}">
