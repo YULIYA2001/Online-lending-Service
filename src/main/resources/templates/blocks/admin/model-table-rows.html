@@ -7,7 +7,7 @@
     <td th:text="${user.getUserDetails().getPassportID()}"></td>
     <td th:text="${user.getEmail()}"></td>
     <td th:with="date=${user.getUserDetails().getRegDate().toString()}"
-        th:text="${date.substring(0, date.length()-4)}"></td>
+        th:text="${date.substring(0, 19)}"></td>
 <!--    <td th:text="${user.getUserDetails().getRegDate()}"></td>-->
     <td th:text="${user.getRole.name()}"></td>
 </th:block>
@@ -21,7 +21,7 @@
     <td th:text="${user.getEmail()}"></td>
 <!--    <td th:text="${user.getUserDetails().getRegDate()}"></td>-->
     <td th:with="date=${user.getUserDetails().getRegDate().toString()}"
-        th:text="${date.substring(0, date.length()-4)}"></td>
+        th:text="${date.substring(0, 19)}"></td>
 </th:block>
 
 
@@ -66,7 +66,7 @@
     <td th:text="${response.getPayment()}"></td>
 <!--    <td th:text="${response.getDatetime()}"></td>-->
     <td th:with="date=${response.getDatetime().toString()}"
-        th:text="${date.substring(0, date.length()-4)}"></td>
+        th:text="${date.substring(0, 19)}"></td>
     <th:block th:if="${response.getAlternativeCreditVariant()!=null}">
         <td th:text="${response.getAlternativeCreditVariant().getRate() + '%  -  '
         + response.getAlternativeCreditVariant().getTerm()}">
