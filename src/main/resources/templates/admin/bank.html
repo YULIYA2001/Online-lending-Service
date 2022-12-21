@@ -10,215 +10,446 @@
 </head>
 <body>
 
-    <th:block th:replace="blocks/admin/admin-header :: header"></th:block>
+<th:block th:replace="blocks/admin/admin-header :: header"></th:block>
 
-    <div th:if="${#ctx.containsVariable('msgExistingBankName')}" th:text="${msgExistingBankName}"
-         id="box" class="alert alert-danger mx-auto my-2 w-50" role="alert">
-    </div>
+<div th:if="${#ctx.containsVariable('msgExistingBankName')}" th:text="${msgExistingBankName}"
+     id="box" class="alert alert-danger mx-auto my-2 w-50" role="alert">
+</div>
 
-    <div class="container" th:if="${bank == null}">
-        <!-- Modal btn -->
-        <button id="createBankModalBtn" type="button" class="btn btn-outline-dark"
-                onclick="callCreateBankModal()">Создать банк</button>
-        <!-- Modal window -->
-        <div class="modal" id="createBankModal" style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Создание банка</h5>
-                        <button type="button" class="btn-close" onclick="closeCreateBankModal()"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/admin/bank/create" method="post">
-                            <div class="form-outline flex-fill mb-2">
-                                <label class="form-label mb-0 ms-1" for="name">Название</label>
-                                <input type="text" id="name" name="name" minlength="2"
-                                       class="form-control" required/>
-                            </div>
-                            <div class="form-outline flex-fill mb-2">
-                                <label class="form-label mb-0 ms-1" for="trustZone">Зона доверия</label>
-                                <input type="number" id="trustZone" name="trustZone" min="0" max="400" step="1"
-                                       class="form-control" required/>
-                            </div>
-                            <div class="form-outline flex-fill mb-2">
-                                <label class="form-label mb-0 ms-1" for="aboutInfo">Информация о банке</label>
-                                <textarea class="form-control" id="aboutInfo" name="aboutInfo" rows="4"
-                                          style="text-align: justify"></textarea>
-                            </div>
-                            <div class="d-flex justify-content-center mx-4 mt-3 mb-lg-4">
-                                <button type="submit" class="btn btn-outline-dark btn w-25">Сохранить</button>
-                            </div>
-                        </form>
-                    </div>
+<div class="container" th:if="${bank == null}">
+    <!-- Modal btn -->
+    <button id="createBankModalBtn" type="button" class="btn btn-outline-dark"
+            onclick="callCreateBankModal()">Создать банк</button>
+    <!-- Modal window -->
+    <div class="modal" id="createBankModal" style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Создание банка</h5>
+                    <button type="button" class="btn-close" onclick="closeCreateBankModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin/bank/create" method="post">
+                        <div class="form-outline flex-fill mb-2">
+                            <label class="form-label mb-0 ms-1" for="name">Название</label>
+                            <input type="text" id="name" name="name" minlength="2"
+                                   class="form-control" required/>
+                        </div>
+                        <div class="form-outline flex-fill mb-2">
+                            <label class="form-label mb-0 ms-1" for="trustZone">Зона доверия</label>
+                            <input type="number" id="trustZone" name="trustZone" min="0" max="400" step="1"
+                                   class="form-control" required/>
+                        </div>
+                        <div class="form-outline flex-fill mb-2">
+                            <label class="form-label mb-0 ms-1" for="aboutInfo">Информация о банке</label>
+                            <textarea class="form-control" id="aboutInfo" name="aboutInfo" rows="4"
+                                      style="text-align: justify"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-center mx-4 mt-3 mb-lg-4">
+                            <button type="submit" class="btn btn-outline-dark btn w-25">Сохранить</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
-    <div class="container" th:unless="${bank == null}">
-        <div class="row justify-content-between">
+<div class="container" th:unless="${bank == null}">
+    <div class="row justify-content-between">
 
-            <div class="col col-6 d-flex flex-column align-items-center">
-                <div class="d-flex justify-content-between w-100 mx-3 mb-3">
-                    <h4 class="mt-0 ms-5" th:text="${bank.getName()}"></h4>
-                    <button id="editBankModalBtn" type="button" class="btn btn-outline-dark"
-                            onclick="callEditBankModal()">Редактировать</button>
-                </div>
-
-                <p class="text-start px-2 w-100">
-                    <b>Зона доверия:</b>
-                    <span th:text="${' '+bank.getTrustZone()}"></span>
-                </p>
-                <p class="px-2 w-100" style="text-align: justify" th:text="${bank.getAboutInfo()}"></p>
+        <div class="col col-6 d-flex flex-column align-items-center">
+            <div class="d-flex justify-content-between w-100 mx-3 mb-3">
+                <h4 class="mt-0 ms-5" th:text="${bank.getName()}"></h4>
+                <button id="editBankModalBtn" type="button" class="btn btn-outline-dark"
+                        onclick="callEditBankModal()">Редактировать</button>
             </div>
 
-            <div class="col col-1"></div>
+            <p class="text-start px-2 w-100">
+                <b>Зона доверия:</b>
+                <span th:text="${' '+bank.getTrustZone()}"></span>
+            </p>
+            <p class="px-2 w-100" style="text-align: justify; white-space: pre-wrap;" th:text="${bank.getAboutInfo()}"></p>
+        </div>
 
-            <div class="col col-5 d-flex flex-column align-items-center">
-                <table class="table align-middle">
-                    <thead>
-                    <tr>
-                        <th scope="col">Адреса</th>
-                        <th class="text-center" scope="col">Телефоны</th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="address : ${bank.getAddresses()}">
-                        <td th:text="${address.getAddress()}"></td>
-                        <td>
-                            <th:block th:each="phone : ${address.getPhones()}">
-                                <div class="text-center" th:text="${phone.getPhone()}"></div>
-                            </th:block>
-                        </td>
-                        <td>
-                            <a th:href="@{/admin/bank/delete-contacts-{id}(id=${address.getId()})}"
-                               class="btn btn-outline-danger">
-                                <i class="far fa-trash-alt"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+        <div class="col col-1"></div>
 
-                <button id="addContactsModalBtn" type="button" class="btn btn-outline-dark"
-                        onclick="callAddContactsModal()">Добавить</button>
-                <div class="modal" id="addContactsModal" style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Добавление контактов</h5>
-                                <button type="button" class="btn-close"
-                                        onclick="closeAddContactsModal()"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form th:action="@{/admin/bank/{id}/add-contacts(id=${bank.getId()})}" method="post">
-                                    <div class="form-outline flex-fill mb-2">
-                                        <label class="form-label mb-0 ms-1" for="address">Адрес</label>
-                                        <input type="text" id="address" name="address" minlength="2"
-                                               class="form-control" required/>
-                                    </div>
-                                    <div class="form-outline flex-fill mb-2">
-                                        <label class="form-label mb-0">Телефоны</label>
-                                        <input type="text" name="phone1" class="form-control mb-1" required
-                                               pattern="^\+375\((29|24|25|44|33|17)\)(\d{3})-(\d{2})-(\d{2})$"
-                                               placeholder="+375(17)111-11-11"/>
-                                        <input type="text" name="phone2" class="form-control mb-1"
-                                               pattern="^\+375\((29|24|25|44|33|17)\)(\d{3})-(\d{2})-(\d{2})$"
-                                               placeholder="+375(17)111-11-11"/>
-                                        <input type="text" name="phone3" class="form-control"
-                                               pattern="^\+375\((29|24|25|44|33|17)\)(\d{3})-(\d{2})-(\d{2})$"
-                                               placeholder="+375(17)111-11-11"/>
-                                    </div>
+        <div class="col col-5 d-flex flex-column align-items-center">
+            <table class="table align-middle">
+                <thead>
+                <tr>
+                    <th class="w-50" scope="col">Адреса</th>
+                    <th class="text-center w-50" scope="col">Телефоны</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="address : ${bank.getAddresses()}">
+                    <td th:text="${address.getAddress()}"></td>
+                    <td>
+                        <th:block th:each="phone : ${address.getPhones()}">
+                            <div class="text-center" th:text="${phone.getPhone()}"></div>
+                        </th:block>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/bank/delete-contacts-{id}(id=${address.getId()})}"
+                           class="btn btn-outline-danger">
+                            <i class="far fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-                                    <div class="d-flex justify-content-center mx-4 mt-3 mb-lg-4">
-                                        <button type="submit" class="btn btn-outline-dark btn w-25">Сохранить</button>
-                                    </div>
-                                </form>
-                            </div>
+            <button id="addContactsModalBtn" type="button" class="btn btn-outline-dark"
+                    onclick="callAddContactsModal()">Добавить</button>
+            <div class="modal" id="addContactsModal" style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Добавление контактов</h5>
+                            <button type="button" class="btn-close"
+                                    onclick="closeAddContactsModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/admin/bank/{id}/add-contacts(id=${bank.getId()})}" method="post">
+                                <div class="form-outline flex-fill mb-2">
+                                    <label class="form-label mb-0 ms-1" for="address">Адрес</label>
+                                    <input type="text" id="address" name="address" minlength="2"
+                                           class="form-control" required/>
+                                </div>
+                                <div class="form-outline flex-fill mb-2">
+                                    <label class="form-label mb-0">Телефоны</label>
+                                    <input type="text" name="phone1" class="form-control mb-1" required
+                                           pattern="^\+375\((29|24|25|44|33|17)\)(\d{3})-(\d{2})-(\d{2})$"
+                                           placeholder="+375(17)111-11-11"/>
+                                    <input type="text" name="phone2" class="form-control mb-1"
+                                           pattern="^\+375\((29|24|25|44|33|17)\)(\d{3})-(\d{2})-(\d{2})$"
+                                           placeholder="+375(17)111-11-11"/>
+                                    <input type="text" name="phone3" class="form-control"
+                                           pattern="^\+375\((29|24|25|44|33|17)\)(\d{3})-(\d{2})-(\d{2})$"
+                                           placeholder="+375(17)111-11-11"/>
+                                </div>
+
+                                <div class="d-flex justify-content-center mx-4 mt-3 mb-lg-4">
+                                    <button type="submit" class="btn btn-outline-dark btn w-25">Сохранить</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-
-        </div>
-
-        <!-- Modal window for editing bank info -->
-        <div class="modal" id="editBankModal" style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Изменение данных о банке</h5>
-                        <button type="button" class="btn-close"
-                                onclick="closeEditBankModal()"></button>
-                    </div>
-                    <div class="modal-body">
-
-                        <form th:action="@{/admin/bank/edit-{id}(id=${bank.getId()})}" method="post">
-                            <div class="form-outline flex-fill mb-auto">
-                                <label class="form-label mb-0 ms-1" for="name1">Название</label>
-                                <input type="text" id="name1" name="name" minlength="2"
-                                       class="form-control text-" th:value="${bank.getName()}" required/>
-                            </div>
-                            <div class="form-outline flex-fill">
-                                <label class="form-label mb-0 ms-1" for="trustZone1">Зона доверия</label>
-                                <input type="number" id="trustZone1" name="trustZone" min="0" max="400" step="1"
-                                       class="form-control" th:value="${bank.getTrustZone()}" required/>
-                            </div>
-                            <div class="form-outline flex-fill mb-2">
-                                <label class="form-label mb-0 ms-1" for="aboutInfo1">Информация о банке</label>
-                                <textarea class="form-control" id="aboutInfo1" name="aboutInfo" rows="4"
-                                          style="text-align: justify"
-                                          th:text="${bank.getAboutInfo()}"></textarea>
-                            </div>
-                            <div class="d-flex justify-content-center mx-4 mt-3 mb-lg-4">
-                                <button type="submit" class="btn btn-outline-dark btn w-25">Сохранить</button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>
 
-    <th:block th:replace="blocks/footer :: footer"></th:block>
+    <!-- Modal window for editing bank info -->
+    <div class="modal" id="editBankModal" style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Изменение данных о банке</h5>
+                    <button type="button" class="btn-close"
+                            onclick="closeEditBankModal()"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form th:action="@{/admin/bank/edit-{id}(id=${bank.getId()})}" method="post">
+                        <div class="form-outline flex-fill mb-auto">
+                            <label class="form-label mb-0 ms-1" for="name1">Название</label>
+                            <input type="text" id="name1" name="name" minlength="2"
+                                   class="form-control text-" th:value="${bank.getName()}" required/>
+                        </div>
+                        <div class="form-outline flex-fill">
+                            <label class="form-label mb-0 ms-1" for="trustZone1">Зона доверия</label>
+                            <input type="number" id="trustZone1" name="trustZone" min="0" max="400" step="1"
+                                   class="form-control" th:value="${bank.getTrustZone()}" required/>
+                        </div>
+                        <div class="form-outline flex-fill mb-2">
+                            <label class="form-label mb-0 ms-1" for="aboutInfo1">Информация о банке</label>
+                            <textarea class="form-control" id="aboutInfo1" name="aboutInfo" rows="4"
+                                      style="text-align: justify"
+                                      th:text="${bank.getAboutInfo()}"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-center mx-4 mt-3 mb-lg-4">
+                            <button type="submit" class="btn btn-outline-dark btn w-25">Сохранить</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<th:block th:replace="blocks/footer :: footer"></th:block>
 
 </body>
 
-    <script>
-        function callCreateBankModal() {
-            let modal = document.getElementById("createBankModal");
-            modal.style.display = "block";
-        }
-        function closeCreateBankModal() {
-            let modal = document.getElementById("createBankModal");
-            modal.style.display = "none";
-        }
-        function callAddContactsModal() {
-            let modal = document.getElementById("addContactsModal");
-            modal.style.display = "block";
-        }
-        function closeAddContactsModal() {
-            let modal = document.getElementById("addContactsModal");
-            modal.style.display = "none";
-        }
-        function callEditBankModal() {
-            let modal = document.getElementById("editBankModal");
-            modal.style.display = "block";
-        }
-        function closeEditBankModal() {
-            let modal = document.getElementById("editBankModal");
-            modal.style.display = "none";
-        }
+<script>
+    function callCreateBankModal() {
+        let modal = document.getElementById("createBankModal");
+        modal.style.display = "block";
+    }
+    function closeCreateBankModal() {
+        let modal = document.getElementById("createBankModal");
+        modal.style.display = "none";
+    }
+    function callAddContactsModal() {
+        let modal = document.getElementById("addContactsModal");
+        modal.style.display = "block";
+    }
+    function closeAddContactsModal() {
+        let modal = document.getElementById("addContactsModal");
+        modal.style.display = "none";
+    }
+    function callEditBankModal() {
+        let modal = document.getElementById("editBankModal");
+        modal.style.display = "block";
+    }
+    function closeEditBankModal() {
+        let modal = document.getElementById("editBankModal");
+        modal.style.display = "none";
+    }
 
-        // auto close wrong input message
-        setTimeout(() => {
-            const box = document.getElementById('box');
-            box.style.display = 'none';
-        }, 3000);
-    </script>
+    // auto close wrong input message
+    setTimeout(() => {
+        const box = document.getElementById('box');
+        box.style.display = 'none';
+    }, 3000);
+</script>
 
 </html>
+
+
+
+
+
+
+
+<!--<!DOCTYPE HTML>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="ru">-->
+<!--<head>-->
+<!--    <title>Онлайн-кредит(admin)</title>-->
+<!--    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>-->
+<!--    <link rel="stylesheet" href="/css/all.css">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"-->
+<!--          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"-->
+<!--          crossorigin="anonymous">-->
+<!--</head>-->
+<!--<body>-->
+
+<!--    <th:block th:replace="blocks/admin/admin-header :: header"></th:block>-->
+
+<!--    <div th:if="${#ctx.containsVariable('msgExistingBankName')}" th:text="${msgExistingBankName}"-->
+<!--         id="box" class="alert alert-danger mx-auto my-2 w-50" role="alert">-->
+<!--    </div>-->
+
+<!--    <div class="container" th:if="${bank == null}">-->
+<!--        &lt;!&ndash; Modal btn &ndash;&gt;-->
+<!--        <button id="createBankModalBtn" type="button" class="btn btn-outline-dark"-->
+<!--                onclick="callCreateBankModal()">Создать банк</button>-->
+<!--        &lt;!&ndash; Modal window &ndash;&gt;-->
+<!--        <div class="modal" id="createBankModal" style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">-->
+<!--            <div class="modal-dialog modal-dialog-centered">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title">Создание банка</h5>-->
+<!--                        <button type="button" class="btn-close" onclick="closeCreateBankModal()"></button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        <form action="/admin/bank/create" method="post">-->
+<!--                            <div class="form-outline flex-fill mb-2">-->
+<!--                                <label class="form-label mb-0 ms-1" for="name">Название</label>-->
+<!--                                <input type="text" id="name" name="name" minlength="2"-->
+<!--                                       class="form-control" required/>-->
+<!--                            </div>-->
+<!--                            <div class="form-outline flex-fill mb-2">-->
+<!--                                <label class="form-label mb-0 ms-1" for="trustZone">Зона доверия</label>-->
+<!--                                <input type="number" id="trustZone" name="trustZone" min="0" max="400" step="1"-->
+<!--                                       class="form-control" required/>-->
+<!--                            </div>-->
+<!--                            <div class="form-outline flex-fill mb-2">-->
+<!--                                <label class="form-label mb-0 ms-1" for="aboutInfo">Информация о банке</label>-->
+<!--                                <textarea class="form-control" id="aboutInfo" name="aboutInfo" rows="4"-->
+<!--                                          style="text-align: justify"></textarea>-->
+<!--                            </div>-->
+<!--                            <div class="d-flex justify-content-center mx-4 mt-3 mb-lg-4">-->
+<!--                                <button type="submit" class="btn btn-outline-dark btn w-25">Сохранить</button>-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+<!--    <div class="container" th:unless="${bank == null}">-->
+<!--        <div class="row justify-content-between">-->
+
+<!--            <div class="col col-6 d-flex flex-column align-items-center">-->
+<!--                <div class="d-flex justify-content-between w-100 mx-3 mb-3">-->
+<!--                    <h4 class="mt-0 ms-5" th:text="${bank.getName()}"></h4>-->
+<!--                    <button id="editBankModalBtn" type="button" class="btn btn-outline-dark"-->
+<!--                            onclick="callEditBankModal()">Редактировать</button>-->
+<!--                </div>-->
+
+<!--                <p class="text-start px-2 w-100">-->
+<!--                    <b>Зона доверия:</b>-->
+<!--                    <span th:text="${' '+bank.getTrustZone()}"></span>-->
+<!--                </p>-->
+<!--                <p class="px-2 w-100" style="text-align: justify" th:text="${bank.getAboutInfo()}"></p>-->
+<!--            </div>-->
+
+<!--            <div class="col col-1"></div>-->
+
+<!--            <div class="col col-5 d-flex flex-column align-items-center">-->
+<!--                <table class="table align-middle">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                        <th scope="col">Адреса</th>-->
+<!--                        <th class="text-center" scope="col">Телефоны</th>-->
+<!--                        <th scope="col"></th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                    <tr th:each="address : ${bank.getAddresses()}">-->
+<!--                        <td th:text="${address.getAddress()}"></td>-->
+<!--                        <td>-->
+<!--                            <th:block th:each="phone : ${address.getPhones()}">-->
+<!--                                <div class="text-center" th:text="${phone.getPhone()}"></div>-->
+<!--                            </th:block>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <a th:href="@{/admin/bank/delete-contacts-{id}(id=${address.getId()})}"-->
+<!--                               class="btn btn-outline-danger">-->
+<!--                                <i class="far fa-trash-alt"></i>-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    </tbody>-->
+<!--                </table>-->
+
+<!--                <button id="addContactsModalBtn" type="button" class="btn btn-outline-dark"-->
+<!--                        onclick="callAddContactsModal()">Добавить</button>-->
+<!--                <div class="modal" id="addContactsModal" style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">-->
+<!--                    <div class="modal-dialog modal-dialog-centered">-->
+<!--                        <div class="modal-content">-->
+<!--                            <div class="modal-header">-->
+<!--                                <h5 class="modal-title">Добавление контактов</h5>-->
+<!--                                <button type="button" class="btn-close"-->
+<!--                                        onclick="closeAddContactsModal()"></button>-->
+<!--                            </div>-->
+<!--                            <div class="modal-body">-->
+<!--                                <form th:action="@{/admin/bank/{id}/add-contacts(id=${bank.getId()})}" method="post">-->
+<!--                                    <div class="form-outline flex-fill mb-2">-->
+<!--                                        <label class="form-label mb-0 ms-1" for="address">Адрес</label>-->
+<!--                                        <input type="text" id="address" name="address" minlength="2"-->
+<!--                                               class="form-control" required/>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-outline flex-fill mb-2">-->
+<!--                                        <label class="form-label mb-0">Телефоны</label>-->
+<!--                                        <input type="text" name="phone1" class="form-control mb-1" required-->
+<!--                                               pattern="^\+375\((29|24|25|44|33|17)\)(\d{3})-(\d{2})-(\d{2})$"-->
+<!--                                               placeholder="+375(17)111-11-11"/>-->
+<!--                                        <input type="text" name="phone2" class="form-control mb-1"-->
+<!--                                               pattern="^\+375\((29|24|25|44|33|17)\)(\d{3})-(\d{2})-(\d{2})$"-->
+<!--                                               placeholder="+375(17)111-11-11"/>-->
+<!--                                        <input type="text" name="phone3" class="form-control"-->
+<!--                                               pattern="^\+375\((29|24|25|44|33|17)\)(\d{3})-(\d{2})-(\d{2})$"-->
+<!--                                               placeholder="+375(17)111-11-11"/>-->
+<!--                                    </div>-->
+
+<!--                                    <div class="d-flex justify-content-center mx-4 mt-3 mb-lg-4">-->
+<!--                                        <button type="submit" class="btn btn-outline-dark btn w-25">Сохранить</button>-->
+<!--                                    </div>-->
+<!--                                </form>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Modal window for editing bank info &ndash;&gt;-->
+<!--        <div class="modal" id="editBankModal" style="display: none; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">-->
+<!--            <div class="modal-dialog modal-dialog-centered">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title">Изменение данных о банке</h5>-->
+<!--                        <button type="button" class="btn-close"-->
+<!--                                onclick="closeEditBankModal()"></button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+
+<!--                        <form th:action="@{/admin/bank/edit-{id}(id=${bank.getId()})}" method="post">-->
+<!--                            <div class="form-outline flex-fill mb-auto">-->
+<!--                                <label class="form-label mb-0 ms-1" for="name1">Название</label>-->
+<!--                                <input type="text" id="name1" name="name" minlength="2"-->
+<!--                                       class="form-control text-" th:value="${bank.getName()}" required/>-->
+<!--                            </div>-->
+<!--                            <div class="form-outline flex-fill">-->
+<!--                                <label class="form-label mb-0 ms-1" for="trustZone1">Зона доверия</label>-->
+<!--                                <input type="number" id="trustZone1" name="trustZone" min="0" max="400" step="1"-->
+<!--                                       class="form-control" th:value="${bank.getTrustZone()}" required/>-->
+<!--                            </div>-->
+<!--                            <div class="form-outline flex-fill mb-2">-->
+<!--                                <label class="form-label mb-0 ms-1" for="aboutInfo1">Информация о банке</label>-->
+<!--                                <textarea class="form-control" id="aboutInfo1" name="aboutInfo" rows="4"-->
+<!--                                          style="text-align: justify"-->
+<!--                                          th:text="${bank.getAboutInfo()}"></textarea>-->
+<!--                            </div>-->
+<!--                            <div class="d-flex justify-content-center mx-4 mt-3 mb-lg-4">-->
+<!--                                <button type="submit" class="btn btn-outline-dark btn w-25">Сохранить</button>-->
+<!--                            </div>-->
+<!--                        </form>-->
+
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+
+<!--    <th:block th:replace="blocks/footer :: footer"></th:block>-->
+
+<!--</body>-->
+
+<!--    <script>-->
+<!--        function callCreateBankModal() {-->
+<!--            let modal = document.getElementById("createBankModal");-->
+<!--            modal.style.display = "block";-->
+<!--        }-->
+<!--        function closeCreateBankModal() {-->
+<!--            let modal = document.getElementById("createBankModal");-->
+<!--            modal.style.display = "none";-->
+<!--        }-->
+<!--        function callAddContactsModal() {-->
+<!--            let modal = document.getElementById("addContactsModal");-->
+<!--            modal.style.display = "block";-->
+<!--        }-->
+<!--        function closeAddContactsModal() {-->
+<!--            let modal = document.getElementById("addContactsModal");-->
+<!--            modal.style.display = "none";-->
+<!--        }-->
+<!--        function callEditBankModal() {-->
+<!--            let modal = document.getElementById("editBankModal");-->
+<!--            modal.style.display = "block";-->
+<!--        }-->
+<!--        function closeEditBankModal() {-->
+<!--            let modal = document.getElementById("editBankModal");-->
+<!--            modal.style.display = "none";-->
+<!--        }-->
+
+<!--        // auto close wrong input message-->
+<!--        setTimeout(() => {-->
+<!--            const box = document.getElementById('box');-->
+<!--            box.style.display = 'none';-->
+<!--        }, 3000);-->
+<!--    </script>-->
+
+<!--</html>-->

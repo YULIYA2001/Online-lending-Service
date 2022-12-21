@@ -58,12 +58,10 @@ public class ResponseServiceImpl implements ResponseService {
             return null;
         }
 
-        BigDecimal creditMaxSum25;
-        creditMaxSum25 = request.getCreditTermRateVariant().getCredit().getMaxSum()
-                .divide(BigDecimal.valueOf(4), RoundingMode.HALF_EVEN);
+        BigDecimal creditMinSum = request.getCreditTermRateVariant().getCredit().getMinSum();
 
-        // bank return negative answer if user has low score or choose low sum (<25% from maxCreditSum)
-        if ((userScore < minScore) || (request.getSum().compareTo(creditMaxSum25) < 0)) {
+        // bank return negative answer if user has low score or choose low sum
+        if ((userScore < minScore) || (request.getSum().compareTo(creditMinSum) < 0)) {
             return new Response(BigDecimal.valueOf(0), BigDecimal.valueOf(0), new Date(), request);
         }
 

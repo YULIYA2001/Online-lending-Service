@@ -79,6 +79,7 @@
 <th:block th:fragment="credit-for-admin-row">
     <td th:text="${credit.getId()}"></td>
     <td th:text="${credit.getCreditType()}"></td>
+    <td th:text="${credit.getMinSum()}"></td>
     <td th:text="${credit.getMaxSum()}"></td>
     <td>
         <th:block th:each="variant : ${credit.getCreditTermRateVariants()}">

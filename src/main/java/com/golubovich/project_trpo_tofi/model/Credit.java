@@ -25,6 +25,9 @@ public class Credit {
     @Column(precision = 18, scale = 2, nullable = false)
     private BigDecimal maxSum;
 
+    @Column(precision = 18, scale = 2, nullable = false)
+    private BigDecimal minSum;
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "Bank_ID")

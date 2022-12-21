@@ -18,6 +18,10 @@
             <div class="col col-6 d-flex flex-column align-items-start">
                 <h4 class="mb-5 ms-5">"[[${credit.getCreditType()}]]"</h4>
                 <p class="text-start px-2 w-100">
+                    <b>Минимальная сумма:</b>
+                    <span th:text="${' '+credit.getMinSum()}"></span>
+                </p>
+                <p class="text-start px-2 w-100">
                     <b>Максимальная сумма:</b>
                     <span th:text="${' '+credit.getMaxSum()}"></span>
                 </p>
@@ -105,7 +109,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Изменение максимальной суммы</h5>
+                    <h5 class="modal-title">Изменение суммы</h5>
                     <button type="button" class="btn-close"
                             onclick="closeEditCreditModal()"></button>
                 </div>
@@ -113,6 +117,11 @@
 
                     <form th:action="@{/admin/credits/edit-{id}(id=${credit.getId()})}" method="post"
                           class="form justify-content-center">
+                        <div class="form-outline flex-fill w-75 mx-auto mb-3">
+                            <label class="form-label mb-0 ms-1" for="minSum">Минимальная сумма</label>
+                            <input type="number" id="minSum" name="minSum" min="0" step="0.01"
+                                   class="form-control" th:value="${credit.getMinSum()}" required/>
+                        </div>
                         <div class="form-outline flex-fill w-75 mx-auto">
                             <label class="form-label mb-0 ms-1" for="maxSum">Максимальная сумма</label>
                             <input type="number" id="maxSum" name="maxSum" min="100" step="0.01"
@@ -147,6 +156,15 @@
             let modal = document.getElementById("editCreditModal");
             modal.style.display = "none";
         }
+        function checkSums() {
+            if (+document.getElementById("minSum").value > +document.getElementById("maxSum").value) {
+                document.getElementById("maxSum").setCustomValidity('Максимальная сумма должна быть не меньше минимальной');
+            } else {
+                document.getElementById("maxSum").setCustomValidity('');
+            }
+        }
+        document.getElementById("minSum").onchange = checkSums;
+        document.getElementById("maxSum").onchange = checkSums;
     </script>
 
 </html>

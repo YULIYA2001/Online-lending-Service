@@ -55,6 +55,7 @@ public class CreditServiceImpl implements CreditService {
     public void updateCredit(Credit credit) {
         Credit oldCredit = this.findById(credit.getId());
         if (oldCredit != null) {
+            oldCredit.setMinSum(credit.getMinSum());
             oldCredit.setMaxSum(credit.getMaxSum());
             creditRepository.save(oldCredit);
         }

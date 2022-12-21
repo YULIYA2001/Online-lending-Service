@@ -21,7 +21,7 @@
 
             <div class="col col-7 d-flex flex-column align-items-center">
                 <h5 class="text-center">О нас</h5>
-                <p class="px-2" style="text-align: justify" th:text="${bank.getAboutInfo()}"></p>
+                <p class="px-2" style="text-align: justify; white-space: pre-wrap;" th:text="${bank.getAboutInfo()}"></p>
                 <img class="my-2 mx-auto" src="/images/contacts.jpg" alt="Happy life">
             </div>
 
@@ -31,8 +31,8 @@
                 <table class="table align-middle">
                     <thead>
                         <tr>
-                            <th scope="col">Адреса</th>
-                            <th class="text-center" scope="col">Телефоны</th>
+                            <th class="w-50" scope="col">Адреса</th>
+                            <th class="text-center w-50" scope="col">Телефоны</th>
                         </tr>
                     </thead>
                     <tbody>

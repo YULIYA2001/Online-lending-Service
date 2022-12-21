@@ -5,8 +5,13 @@
             <ul class="card-text list-unstyled d-flex flex-column align-items-start">
                 <li>
                     <i class="fas fa-chevron-circle-down"></i>
-                    <span class="text-truncate" th:each="creditVariants : ${credit.getCreditTermRateVariants()}"
+                    <span style=" text-overflow: ellipsis;" class="text-truncate" th:each="creditVariants : ${credit.getCreditTermRateVariants()}"
                           th:text="${creditVariants.getRate()} + '%, '"></span>
+                </li>
+                <li>
+                    <i class="fas fa-chevron-circle-down"></i>
+
+                    <span class="text-truncate" th:text="'От ' + ${credit.getMinSum()} + ' бел.руб.'"></span>
                 </li>
                 <li>
                     <i class="fas fa-chevron-circle-down"></i>
